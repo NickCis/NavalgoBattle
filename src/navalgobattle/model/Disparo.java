@@ -1,6 +1,6 @@
-package navalgobattle.modelo
+package navalgobattle.model;
 
-import navalgobattle.NavalgoBattle
+import navalgobattle.NavalgoBattle;
 /**
  * Disparo. Clase abstracta.
  */
