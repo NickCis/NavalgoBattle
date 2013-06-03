@@ -5,10 +5,10 @@ import navalgobattle.model.NavalgoBattle;
  * Disparo. Clase abstracta.
  */
 public abstract class Disparo {
-	private int x;
-	private int y;
-	private int costo;
-	private NavalgoBattle juego;
+	protected int x;
+	protected int y;
+	protected int costo;
+	protected NavalgoBattle juego;
 
 	public Disparo(int x, int y){
 	}
@@ -21,6 +21,12 @@ public abstract class Disparo {
 	 */
 	public boolean disparar(){
 		return true;
+	}
+
+	/** Devuelve el costo.
+	 */
+	public int getCosto(){
+		return costo;
 	}
 }
 

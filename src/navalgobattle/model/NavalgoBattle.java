@@ -2,6 +2,7 @@ package navalgobattle.model;
 
 // Packages del sistema
 import java.util.ArrayList;
+import java.util.Iterator;
 
 // Packages nuestros
 import navalgobattle.model.Disparo;
@@ -18,23 +19,34 @@ import navalgobattle.model.Jugador;
 
 public class NavalgoBattle {
 
-	private Jugador jugador;
-	private int turno;
-	private ArrayList<Nave> navesList;
-	private ArrayList<Mina> minasList;
-	private ArrayList<Convencional> convencionalList;
+	protected Jugador jugador;
+	protected int turno;
+	protected int puntosPorTurno;
+	protected ArrayList<Nave> navesList;
+	protected ArrayList<Mina> minasList;
+	protected ArrayList<Convencional> convencionalList;
 
 	public NavalgoBattle(){
+		this.navesList = new ArrayList<Nave>();
+		this.minasList = new ArrayList<Mina>();
+		this.convencionalList = new ArrayList<Convencional>();
+		this.turno = 0;
+		this.puntosPorTurno = -10;
 	}
 
 	/** Devuelve las nave en la posicion x y.
 	 * Como puede haber mas de una nave devuelve una lista. Si no hay, devuelve lista vacia.
 	 * @param int x
 	 * @param int y
-	 * @return ArrayList<nave> Naves en la posicion.
+	 * @return ArrayList<Nave> Naves en la posicion.
 	 */
 	public ArrayList<Nave> naveEnPosicion(int x, int y){
 		ArrayList<Nave> naves = new ArrayList<Nave>();
+		for(Nave nave: this.navesList){
+			if(nave.estoyEnPosicion(x, y))
+				naves.add(nave);
+		}
+
 		return naves;
 	}
 
@@ -43,9 +55,16 @@ public class NavalgoBattle {
 	 * Debe guardar el disparo en la lista correspondiente, restarle puntos al jugador.
 	 * @param Disparo disparo: disparo a realizarse
 	 */
+	public void disparar(Disparo disparo){
+		this.jugador.addPuntos(- (disparo.getCosto() ) );
+	}
 	public void disparar(Convencional disparo){
+		this.disparar( (Disparo) disparo);
+		this.convencionalList.add(disparo);
 	}
 	public void disparar(Mina disparo){
+		this.disparar( (Disparo) disparo);
+		this.minasList.add(disparo);
 	}
 
 	/** Metodo usado para agregar una nave.
@@ -53,6 +72,7 @@ public class NavalgoBattle {
 	 * @param Nave nave: nave a agregarse
 	 */
 	public void addNave(Nave nave){
+		this.navesList.add(nave);
 	}
 
 	/** Metodo que se llama para pasar de turno.
@@ -63,5 +83,32 @@ public class NavalgoBattle {
 	 *  4) Resta puntos de turno al jugador.
 	 */
 	public void siguienteTurno(){
+		this.iterarDisparos(this.convencionalList);
+
+		for(Nave nave: this.navesList)
+			nave.mover();
+
+		this.iterarDisparos(this.minasList);
+
+		//Remuevo naves que no esten vivas
+		Iterator<Nave> it = this.navesList.iterator();
+		while (it.hasNext()){
+			Nave n = it.next();
+			if(! n.estaViva())
+				it.remove();
+		}
+
+		this.turno++;
+		this.jugador.addPuntos(this.puntosPorTurno);
 	}
+
+	protected void iterarDisparos(ArrayList list){
+		Iterator<Disparo> it = list.iterator();
+		while (it.hasNext()){
+			Disparo c = it.next();
+			if(c.disparar())
+				it.remove();
+		}
+	}
+
 }
