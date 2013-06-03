@@ -1,6 +1,6 @@
 package navalgobattle.model;
 
-import navalgobattle.NavalgoBattle;
+import navalgobattle.model.NavalgoBattle;
 /**
  * Disparo. Clase abstracta.
  */
@@ -20,6 +20,7 @@ public abstract class Disparo {
 	 * @return boolean Se efectuo el disparo?.
 	 */
 	public boolean disparar(){
+		return true;
 	}
 }
 
@@ -27,11 +28,17 @@ public abstract class Disparo {
 /** Clase Convencional.
  * Extiende de Disparo. Este tipo de disparos son los que se hacen instantaneamente, es decir, antes de que se muevan las naves.
  */
-public class Convencional extends Disparo {
+class Convencional extends Disparo {
+	public Convencional(int x, int y){
+		super(x, y);
+	}
 }
 
 /** Clase Mina.
  * Extiende de Disparo. Este tipo de disparos son los que se hacen con retardo, es decir, despues de que se muevan las naves.
  */
-public class Mina extends Disparo {
+class Mina extends Disparo {
+	public Mina(int x, int y){
+		super(x, y);
+	}
 }

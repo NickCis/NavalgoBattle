@@ -1,14 +1,14 @@
-package navalgobattle.modelo
+package navalgobattle.model;
 
 // Packages del sistema
-import java.util.ArrayList
+import java.util.ArrayList;
 
 // Packages nuestros
-import navalgobattle.modelo.Disparo;
-import navalgobattle.modelo.Convencional;
-import navalgobattle.modelo.Mina;
-import navalgobattle.modelo.Nave;
-import navalgobattle.modelo.Jugador;
+import navalgobattle.model.Disparo;
+import navalgobattle.model.Convencional;
+import navalgobattle.model.Mina;
+import navalgobattle.model.Nave;
+import navalgobattle.model.Jugador;
 /**
  * Clase principal del juego.
  * 
@@ -34,6 +34,8 @@ public class NavalgoBattle {
 	 * @return ArrayList<nave> Naves en la posicion.
 	 */
 	public ArrayList<Nave> naveEnPosicion(int x, int y){
+		ArrayList<Nave> naves = new ArrayList<Nave>();
+		return naves;
 	}
 
 	/** Metodo usado para agregar un disparo.

@@ -1,4 +1,4 @@
-package navalgobattle.modelo
+package navalgobattle.model;
 /**
  * Jugador.
  * 
@@ -11,5 +11,6 @@ public class Jugador {
 	}
 
 	public int getPuntos(){
+		return this.puntos;
 	}
 }
