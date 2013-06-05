@@ -12,27 +12,26 @@ import navalgobattle.model.Disparo;
  * @author todos vamos a meter mano
  */
 public class Nave {
-	protected int tam;
 	protected int direccion; //-> Guarda en que direccion se mueve
 	protected ArrayList<Posicion> posVidas; //-> Lista de posiciones con la vida respectiva de cada poisicion
 	protected int xMax;
 	protected int yMax;
 	//protected NavalgoBattle juego;
 
-	public Nave(int xMax, int yMax){
+	public Nave(int xMax, int yMax) throws ExceptionNave{
 		this.xMax = xMax;
 		this.yMax = yMax;
 		this.posVidas = new ArrayList<Posicion>();
 	}
 
-	public Nave(int xMax, int yMax, int x, int y){
+	public Nave(int xMax, int yMax, int direccion) throws ExceptionNave{
 		this(xMax, yMax);
-		this.setPosicion(x, y);
+		this.setDireccion(direccion);
 	}
 
-	public Nave(int xMax, int yMax, int x, int y, int direccion){
-		this(xMax, yMax, x, y);
-		this.setDireccion(direccion);
+	public Nave(int xMax, int yMax, int direccion, int x, int y) throws ExceptionNave{
+		this(xMax, yMax, direccion);
+		this.setPosicion(x, y);
 	}
 	
 
@@ -41,9 +40,31 @@ public class Nave {
 	 * @param int y: posicion y
 	 */
 
-	public void setPosicion(int x, int y){
-		Posicion estaPos = new Posicion(x, y, 1);
-		this.posVidas.add(estaPos);
+	public void setPosicion(int x, int y) throws PosicionInvalida{
+		int size = this.size();
+		while((size--) > 0){
+			if(x < 0 || x > this.xMax || y < 0 || y > this.yMax)
+				throw new PosicionInvalida(x, y);
+
+			Posicion estaPos = new Posicion(x, y, this.vidaPorPos());
+			this.posVidas.add(estaPos);
+
+			if((this.direccion & 1) != 0)
+				x += ( ((this.direccion & 2) != 0)? -1: 1 );
+			if((this.direccion & 4) != 0)
+				y += ( ((this.direccion & 8) != 0)? -1: 1 );
+		}
+	}
+
+	protected int vidaPorPos(){
+		return 1;
+	}
+	protected int size(){
+		return 1;
+	}
+
+	public int getSize(){
+		return this.posVidas.size();
 	}
 
 	/** Setea la direccion a cual se movera.
@@ -147,6 +168,79 @@ public class Nave {
 			}
 		}
 	}
+}
+
+/** Lancha. Nave de 2 casilleros */
+class Lancha extends Nave {
+	public Lancha(int xMax, int yMax, int x, int y, int direccion) throws ExceptionNave{
+		super(xMax, yMax, x, y, direccion);
+	}
+
+	protected int size(){
+		return 2;
+	}
+}
+
+/** Destructur. Nave de 3 casilleros, solamente la danan los disparos directos */
+class Destructor extends Nave{
+	public Destructor(int xMax, int yMax, int x, int y, int direccion) throws ExceptionNave{
+		super(xMax, yMax, x, y, direccion);
+	}
+	protected int size(){
+		return 3;
+	}
+	public void danar(Disparo disparo, int x, int y){}
+	public void danar(Convencional disparo, int x, int y){
+		super.danar(disparo, x, y);
+	}
+}
+
+/** Buque. Nave de 4 casilleros, el impacto en cualquier lado de la nave la destruye*/
+class Buque extends Nave{
+	public Buque(int xMax, int yMax, int x, int y, int direccion) throws ExceptionNave{
+		super(xMax, yMax, x, y, direccion);
+	}
+	protected int size(){
+		return 4;
+	}
+	public void danar(Disparo disparo, int x, int y){
+		if(this.estoyEnPosicion(x, y))
+			this.posVidas = new ArrayList<Posicion>();
+	}
+
+}
+
+/** PortaAviones. Nave d 5 casilleros*/
+class PortaAviones extends Nave{
+	public PortaAviones(int xMax, int yMax, int x, int y, int direccion) throws ExceptionNave{
+		super(xMax, yMax, x, y, direccion);
+	}
+
+	protected int size(){
+		return 5;
+	}
+}
+
+/** RompeHielos. Nave de 3 casilleros, requiere dispararle dos veces en cada casillero para destruirla*/
+class RompeHielos extends Nave{
+	public RompeHielos(int xMax, int yMax, int x, int y, int direccion) throws ExceptionNave{
+		super(xMax, yMax, x, y, direccion);
+	}
+
+	protected int vidaPorPos(){
+		return 2;
+	}
+
+	protected int size(){
+		return 4;
+	}
+}
+
+
+
+class ExceptionNave extends Exception {}
+class PosicionInvalida extends ExceptionNave {
+	public PosicionInvalida(int x, int y){}
 }
 
 class Posicion {
