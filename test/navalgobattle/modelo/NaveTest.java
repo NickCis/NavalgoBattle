@@ -58,4 +58,13 @@ public class NaveTest extends TestCase{
 
 		this.assertEquals(true, nave.estoyEnPosicion(4, 4));
 	}
+
+	@Test
+	public void testMatarNave(){
+		Nave nave = new Nave(5, 5, 0, 0, 0);
+
+		this.assertEquals(true, nave.estaViva());
+		nave.danar((Disparo) null, 0, 0);
+		this.assertEquals(false, nave.estaViva());
+	}
 }

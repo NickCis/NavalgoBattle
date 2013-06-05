@@ -1,6 +1,7 @@
 package navalgobattle.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import navalgobattle.model.NavalgoBattle;
 import navalgobattle.model.Disparo;
@@ -130,7 +131,21 @@ public class Nave {
 	/** Danar a una nave.
 	 * @param Disparo disparo, instancia de disparo que quiere danar a la nave.
 	 */
-	public void danar(Disparo disparo){
+	public void danar(Disparo disparo, int x, int y){
+		Posicion estaPos = new Posicion(x, y, 0);
+
+		Iterator<Posicion> it = this.posVidas.iterator();
+		while (it.hasNext()){
+			Posicion pos = it.next();
+			if(pos.equals(estaPos)){
+				int vida = pos.getVida();
+				vida -= 1;
+				if(vida == 0)
+					it.remove();
+				else
+					pos.setVida(vida);
+			}
+		}
 	}
 }
 
