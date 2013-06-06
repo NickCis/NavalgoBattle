@@ -9,7 +9,7 @@ import navalgobattle.model.Disparo;
 import navalgobattle.model.Nave;
 import navalgobattle.model.Posicion;
 
-class Posicion {
+public class Posicion {
 	private int x;
 	private int y;
 	private int vida;

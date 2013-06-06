@@ -6,8 +6,8 @@ import java.util.Iterator;
 
 // Packages nuestros
 import navalgobattle.model.Disparo;
-import navalgobattle.model.Convencional;
-import navalgobattle.model.Mina;
+import navalgobattle.model.disparos.Convencional;
+import navalgobattle.model.disparos.Mina;
 import navalgobattle.model.Nave;
 import navalgobattle.model.Jugador;
 /**

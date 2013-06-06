@@ -29,22 +29,3 @@ public abstract class Disparo {
 		return costo;
 	}
 }
-
-
-/** Clase Convencional.
- * Extiende de Disparo. Este tipo de disparos son los que se hacen instantaneamente, es decir, antes de que se muevan las naves.
- */
-class Convencional extends Disparo {
-	public Convencional(int x, int y){
-		super(x, y);
-	}
-}
-
-/** Clase Mina.
- * Extiende de Disparo. Este tipo de disparos son los que se hacen con retardo, es decir, despues de que se muevan las naves.
- */
-class Mina extends Disparo {
-	public Mina(int x, int y){
-		super(x, y);
-	}
-}

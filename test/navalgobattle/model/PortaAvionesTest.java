@@ -5,6 +5,10 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
+import navalgobattle.model.naves.PortaAviones;
+import navalgobattle.model.exceptions.ExceptionNave;
+import navalgobattle.model.exceptions.PosicionInvalida;
+
 public class PortaAvionesTest extends TestCase{
 	@Before
 	public void setUp(){

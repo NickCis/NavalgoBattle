@@ -5,6 +5,8 @@ import java.util.Iterator;
 
 import navalgobattle.model.NavalgoBattle;
 import navalgobattle.model.Disparo;
+import navalgobattle.model.exceptions.ExceptionNave;
+import navalgobattle.model.exceptions.PosicionInvalida;
 /**
  * Nave.
  * 
@@ -168,10 +170,4 @@ public class Nave {
 			}
 		}
 	}
-}
-
-
-class ExceptionNave extends Exception {}
-class PosicionInvalida extends ExceptionNave {
-	public PosicionInvalida(int x, int y){}
 }

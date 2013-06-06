@@ -1,4 +1,4 @@
-package navalgobattle.model;
+package navalgobattle.model.naves;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,13 +8,15 @@ import navalgobattle.model.Disparo;
 import navalgobattle.model.Nave;
 import navalgobattle.model.Posicion;
 
-/** PortaAviones. Nave d 5 casilleros*/
-class PortaAviones extends Nave{
-	public PortaAviones(int xMax, int yMax, int x, int y, int direccion) throws ExceptionNave{
+import navalgobattle.model.exceptions.ExceptionNave;
+
+/** Lancha. Nave de 2 casilleros */
+public class Lancha extends Nave {
+	public Lancha(int xMax, int yMax, int x, int y, int direccion) throws ExceptionNave{
 		super(xMax, yMax, x, y, direccion);
 	}
 
 	protected int size(){
-		return 5;
+		return 2;
 	}
 }
