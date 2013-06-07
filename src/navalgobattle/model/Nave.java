@@ -15,7 +15,9 @@ import navalgobattle.model.exceptions.PosicionInvalida;
  */
 public class Nave {
 	protected int direccion; //-> Guarda en que direccion se mueve
+	// Reemplazar por ParteNave
 	protected ArrayList<Posicion> posVidas; //-> Lista de posiciones con la vida respectiva de cada poisicion
+	// Reemplazar maximo x y, por posicion maxima
 	protected int xMax;
 	protected int yMax;
 	//protected NavalgoBattle juego;

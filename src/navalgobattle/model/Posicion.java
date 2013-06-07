@@ -1,23 +1,20 @@
-
 package navalgobattle.model;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import navalgobattle.model.NavalgoBattle;
-import navalgobattle.model.Disparo;
-import navalgobattle.model.Nave;
-import navalgobattle.model.Posicion;
-
+/** Borrar este meotodos de vida, se pasan a otro lado*/
 public class Posicion {
 	private int x;
 	private int y;
 	private int vida;
+	/** Crea una posicion.
+	 * @param int x: coordenada en x.
+	 * @param int y: coordenada en y.
+	 */
 	public Posicion(int x, int y, int vida){
 		this.x = x;
 		this.y = y;
 		this.vida = vida;
 	}
+
 	public int getX(){
 		return this.x;
 	}
@@ -39,6 +36,14 @@ public class Posicion {
 		return this.vida;
 	}
 
+	/** isMenor. Dice si el objeto que se le pasa de parametro es menor que este.
+	 * Menor siginifica que las coordenadas x e y, del objeto que se le pasa sean (ambas) menores o iguales a las de si mismo.
+	 * @param Posicion posicion.
+	 * @return boolean es menor?
+	 */
+	public boolean isMenor(Posicion posicion){
+		return true;
+	}
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null) return false;
