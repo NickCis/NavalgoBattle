@@ -1,8 +1,14 @@
 package navalgobattle.model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import navalgobattle.model.NavalgoBattle;
+import navalgobattle.model.Nave;
+import navalgobattle.model.exceptions.ExceptionDisparo;
 /**
  * Disparo. Clase abstracta.
+ * 
+ * @author todos vamos a meter mano
  */
 public abstract class Disparo {
 	protected int x;
@@ -11,6 +17,9 @@ public abstract class Disparo {
 	protected NavalgoBattle juego;
 
 	public Disparo(int x, int y){
+            this.x = x;
+            this.y = y;
+            this.juego = new NavalgoBattle();  
 	}
 	/** Efectua un disparo.
 	 * 1) Controla si efectivamente tiene que disparar.
@@ -19,7 +28,8 @@ public abstract class Disparo {
 	 * 4) Si es que disparo, devuelve true. Si no disparo, devuelve false.
 	 * @return boolean Se efectuo el disparo?.
 	 */
-	public boolean disparar(){
+	public boolean disparar() throws ExceptionDisparo{
+            
 		return true;
 	}
 
@@ -28,4 +38,12 @@ public abstract class Disparo {
 	public int getCosto(){
 		return costo;
 	}
+        /*
+         * Setea el costo.
+         */
+        public void setCosto(int c){
+		costo = c;
+	}
+
 }
+

@@ -106,7 +106,7 @@ public class NavalgoBattle {
 		Iterator<Disparo> it = list.iterator();
 		while (it.hasNext()){
 			Disparo c = it.next();
-			if(c.disparar())
+			//if(c.disparar())
 				it.remove();
 		}
 	}
