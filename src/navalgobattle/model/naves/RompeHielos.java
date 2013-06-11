@@ -16,8 +16,8 @@ import navalgobattle.model.exceptions.ExceptionNave;
  */
 public class RompeHielos extends Nave {
 
-	public RompeHielos(int xMax, int yMax, int x, int y, int direccion) throws ExceptionNave {
-		super(xMax, yMax, x, y, direccion);
+	public RompeHielos(Posicion maxPos, Posicion pos, int direccion) throws ExceptionNave {
+		super(maxPos, pos, direccion);
 	}
 
 	protected int vidaPorPos() {

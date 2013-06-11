@@ -13,14 +13,14 @@ import navalgobattle.model.exceptions.ExceptionNave;
 
 /** Destructur. Nave de 3 casilleros, solamente la danan los disparos directos */
 public class Destructor extends Nave{
-	public Destructor(int xMax, int yMax, int x, int y, int direccion) throws ExceptionNave{
-		super(xMax, yMax, x, y, direccion);
+	public Destructor(Posicion maxPos, Posicion pos, int direccion) throws ExceptionNave{
+		super(maxPos, pos, direccion);
 	}
 	protected int size(){
 		return 3;
 	}
-	public void danar(Disparo disparo, int x, int y){}
-	public void danar(Convencional disparo, int x, int y){
-		super.danar(disparo, x, y);
+	public void danar(Disparo disparo, Posicion posicion){}
+	public void danar(Convencional disparo, Posicion posicion){
+		super.danar(disparo, posicion);
 	}
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import navalgobattle.model.NavalgoBattle;
+import navalgobattle.model.Posicion;
+import navalgobattle.model.ParteNave;
 import navalgobattle.model.Disparo;
 import navalgobattle.model.exceptions.ExceptionNave;
 import navalgobattle.model.exceptions.PosicionInvalida;
@@ -15,48 +17,32 @@ import navalgobattle.model.exceptions.PosicionInvalida;
  */
 public class Nave {
 	protected int direccion; //-> Guarda en que direccion se mueve
-	// Reemplazar por ParteNave
-	protected ArrayList<Posicion> posVidas; //-> Lista de posiciones con la vida respectiva de cada poisicion
-	// Reemplazar maximo x y, por posicion maxima
-	protected int xMax;
-	protected int yMax;
-	//protected NavalgoBattle juego;
+	protected ArrayList<ParteNave> partes; //-> Lista de partes de nave
+	protected Posicion maxPos;
 
-	public Nave(int xMax, int yMax) throws ExceptionNave{
-		this.xMax = xMax;
-		this.yMax = yMax;
-		this.posVidas = new ArrayList<Posicion>();
-	}
-
-	public Nave(int xMax, int yMax, int direccion) throws ExceptionNave{
-		this(xMax, yMax);
+	public Nave(Posicion maxPos, Posicion pos, int direccion) throws ExceptionNave{
+		this.maxPos = maxPos;
+		this.partes = new ArrayList<ParteNave>();
 		this.setDireccion(direccion);
+		this.setPosicion(pos);
 	}
-
-	public Nave(int xMax, int yMax, int direccion, int x, int y) throws ExceptionNave{
-		this(xMax, yMax, direccion);
-		this.setPosicion(x, y);
-	}
-	
 
 	/** Setea la posicion.
 	 * @param int x: posicion x
 	 * @param int y: posicion y
 	 */
 
-	public void setPosicion(int x, int y) throws PosicionInvalida{
+	public void setPosicion(Posicion posicion) throws PosicionInvalida{
 		int size = this.size();
+		Posicion newPos = new Posicion(posicion);
 		while((size--) > 0){
-			if(x < 0 || x > this.xMax || y < 0 || y > this.yMax)
-				throw new PosicionInvalida(x, y);
+			if(! this.maxPos.isMenor(newPos))
+				throw new PosicionInvalida(newPos);
 
-			Posicion estaPos = new Posicion(x, y, this.vidaPorPos());
-			this.posVidas.add(estaPos);
+			ParteNave parte = new ParteNave(newPos, this.vidaPorPos());
+			this.partes.add(parte);
 
-			if((this.direccion & 1) != 0)
-				x += ( ((this.direccion & 2) != 0)? -1: 1 );
-			if((this.direccion & 4) != 0)
-				y += ( ((this.direccion & 8) != 0)? -1: 1 );
+			newPos = newPos.getSiguiente(this.direccion);
 		}
 	}
 
@@ -68,7 +54,7 @@ public class Nave {
 	}
 
 	public int getSize(){
-		return this.posVidas.size();
+		return this.partes.size();
 	}
 
 	/** Setea la direccion a cual se movera.
@@ -91,22 +77,14 @@ public class Nave {
 		if(!this.puedoMover())
 			this.espejarDireccion();
 
-		for(Posicion pos : this.posVidas){
-			// TODO: este laburo se podria pasar a la posicion
-			int newX = pos.getX();
-			int newY = pos.getY();
-			if((this.direccion & 1) != 0)
-				newX += ( ((this.direccion & 2) != 0)? -1: 1 );
-			if((this.direccion & 4) != 0)
-				newY += ( ((this.direccion & 8) != 0)? -1: 1 );
-			pos.setXY(newX, newY);
+		for(ParteNave parte : this.partes){
+			parte.mover(this.direccion);
 		}
 	}
 
-	public boolean estoyEnPosicion(int x, int y){
-		Posicion estaPos = new Posicion(x, y, 0);
-		for(Posicion pos : this.posVidas){
-			if(pos.equals(estaPos))
+	public boolean estoyEnPosicion(Posicion posicion){
+		for(ParteNave parte : this.partes){
+			if(parte.estoyEnPosicion(posicion))
 				return true;
 		}
 
@@ -117,18 +95,9 @@ public class Nave {
 	 * @return verdadero si puede, falso si no.
 	 */
 	protected boolean puedoMover(){
-		for(Posicion pos : this.posVidas){
-			// TODO: este laburo se podria pasar a la posicion
-			if((this.direccion & 1) != 0){
-				int newX = pos.getX() + ( ((this.direccion & 2)!= 0)? -1: 1 );
-				if(newX < 0 || newX > this.xMax)
-					return false;
-			}
-			if((this.direccion & 4) != 0){
-				int newY = pos.getY() + ( ((this.direccion & 8) != 0)? -1: 1 );
-				if(newY < 0 || newY > this.yMax)
-					return false;
-			}
+		for(ParteNave parte : this.partes){
+			if(!parte.puedoMover(this.maxPos, this.direccion))
+				return false;
 		}
 		return true;
 	}
@@ -145,8 +114,8 @@ public class Nave {
 	 */
 	public boolean estaViva(){
 		boolean estaViva = false;
-		for(Posicion pos : this.posVidas){
-			if(pos.getVida() > 0)
+		for(ParteNave parte : this.partes){
+			if(parte.getVida() > 0)
 				estaViva = true;
 		}
 
@@ -156,19 +125,17 @@ public class Nave {
 	/** Danar a una nave.
 	 * @param Disparo disparo, instancia de disparo que quiere danar a la nave.
 	 */
-	public void danar(Disparo disparo, int x, int y){
-		Posicion estaPos = new Posicion(x, y, 0);
-
-		Iterator<Posicion> it = this.posVidas.iterator();
+	public void danar(Disparo disparo, Posicion posicion){
+		Iterator<ParteNave> it = this.partes.iterator();
 		while (it.hasNext()){
-			Posicion pos = it.next();
-			if(pos.equals(estaPos)){
-				int vida = pos.getVida();
+			ParteNave parte = it.next();
+			if(parte.estoyEnPosicion(posicion)){
+				int vida = parte.getVida();
 				vida -= 1;
 				if(vida == 0)
 					it.remove();
 				else
-					pos.setVida(vida);
+					parte.setVida(vida);
 			}
 		}
 	}

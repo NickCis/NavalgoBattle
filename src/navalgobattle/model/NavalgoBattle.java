@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 // Packages nuestros
 import navalgobattle.model.Disparo;
+import navalgobattle.model.Posicion;
 import navalgobattle.model.disparos.Convencional;
 import navalgobattle.model.disparos.Mina;
 import navalgobattle.model.Nave;
@@ -22,16 +23,33 @@ public class NavalgoBattle {
 	protected Jugador jugador;
 	protected int turno;
 	protected int puntosPorTurno;
+	protected Posicion maxPos;
 	protected ArrayList<Nave> navesList;
 	protected ArrayList<Mina> minasList;
 	protected ArrayList<Convencional> convencionalList;
 
-	public NavalgoBattle(){
+	protected NavalgoBattle(){
 		this.navesList = new ArrayList<Nave>();
 		this.minasList = new ArrayList<Mina>();
 		this.convencionalList = new ArrayList<Convencional>();
 		this.turno = 0;
 		this.puntosPorTurno = -10;
+	}
+
+	public NavalgoBattle(Posicion maxPos, Jugador jugador){
+		this();
+		this.setJugador(jugador);
+		this.setMaximaPosicion(maxPos);
+	}
+
+	void setPuntosPorTurno(int puntosPorTurno){
+		this.puntosPorTurno = puntosPorTurno;
+	}
+	void setJugador(Jugador jugador){
+		this.jugador = jugador;
+	}
+	void setMaximaPosicion(Posicion maxPos){
+		this.maxPos = maxPos;
 	}
 
 	/** Devuelve las nave en la posicion x y.
@@ -40,10 +58,10 @@ public class NavalgoBattle {
 	 * @param int y
 	 * @return ArrayList<Nave> Naves en la posicion.
 	 */
-	public ArrayList<Nave> naveEnPosicion(int x, int y){
+	public ArrayList<Nave> naveEnPosicion(Posicion posicion){
 		ArrayList<Nave> naves = new ArrayList<Nave>();
 		for(Nave nave: this.navesList){
-			if(nave.estoyEnPosicion(x, y))
+			if(nave.estoyEnPosicion(posicion))
 				naves.add(nave);
 		}
 
@@ -82,7 +100,7 @@ public class NavalgoBattle {
 	 *  4) Limpia lista de naves.
 	 *  4) Resta puntos de turno al jugador.
 	 */
-	public void siguienteTurno(){
+	public void siguienteTurno() throws Exception{
 		this.iterarDisparos(this.convencionalList);
 
 		for(Nave nave: this.navesList)
@@ -102,11 +120,11 @@ public class NavalgoBattle {
 		this.jugador.addPuntos(this.puntosPorTurno);
 	}
 
-	protected void iterarDisparos(ArrayList list){
+	protected void iterarDisparos(ArrayList list) throws Exception{
 		Iterator<Disparo> it = list.iterator();
 		while (it.hasNext()){
 			Disparo c = it.next();
-			//if(c.disparar())
+			if(c.disparar())
 				it.remove();
 		}
 	}

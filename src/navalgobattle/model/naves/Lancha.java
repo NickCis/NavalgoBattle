@@ -12,8 +12,8 @@ import navalgobattle.model.exceptions.ExceptionNave;
 
 /** Lancha. Nave de 2 casilleros */
 public class Lancha extends Nave {
-	public Lancha(int xMax, int yMax, int x, int y, int direccion) throws ExceptionNave{
-		super(xMax, yMax, x, y, direccion);
+	public Lancha(Posicion maxPos, Posicion posicion, int direccion) throws ExceptionNave{
+		super(maxPos, posicion, direccion);
     	}
 
 	protected int size(){

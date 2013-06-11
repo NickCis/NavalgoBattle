@@ -4,20 +4,26 @@ package navalgobattle.model;
 public class Posicion {
 	private int x;
 	private int y;
-	private int vida;
 	/** Crea una posicion.
 	 * @param int x: coordenada en x.
 	 * @param int y: coordenada en y.
 	 */
-	public Posicion(int x, int y, int vida){
-		this.x = x;
-		this.y = y;
-		this.vida = vida;
+	public Posicion(int x, int y){
+		this.setXY(x, y);
+	}
+	public Posicion(Posicion pos){
+		this.setXY(pos);
 	}
 
 	public int getX(){
 		return this.x;
 	}
+
+	public void setXY(Posicion posicion){
+		this.x = posicion.getX();
+		this.y = posicion.getY();
+	}
+
 	public void setXY(int x, int y){
 		this.x = x;
 		this.y = y;
@@ -27,13 +33,24 @@ public class Posicion {
 		return this.y;
 	}
 
-	public int getVida(){
-		return this.vida;
-        }
+	/**La posicion cambia su valor a la siguiente.
+	 * @param int direccion: direccion de la siguuiente posicion.
+	 */
+	public void setSiguiente(int direccion){
+		this.setXY(this.getSiguiente(direccion));
+	}
 
-	public int setVida(int vida){
-		this.vida = vida;
-		return this.vida;
+	/** Devuelve la posicion siguiente en la direccion pasada.
+	 * @param int direccion: direccion de la siguiente posicion.
+	 */
+	public Posicion getSiguiente(int direccion){
+		int x = this.getX();
+		int y = this.getY();
+		if((direccion & 1) != 0)
+			x += ( ((direccion & 2) != 0)? -1: 1 );
+		if((direccion & 4) != 0)
+			y += ( ((direccion & 8) != 0)? -1: 1 );
+		return new Posicion(x, y);
 	}
 
 	/** isMenor. Dice si el objeto que se le pasa de parametro es menor que este.
@@ -42,7 +59,9 @@ public class Posicion {
 	 * @return boolean es menor?
 	 */
 	public boolean isMenor(Posicion posicion){
-		return true;
+		if(posicion.getX() <= this.getX() && posicion.getY() <= this.getY())
+			return true;
+		return false;
 	}
 	@Override
 	public boolean equals(Object obj) {

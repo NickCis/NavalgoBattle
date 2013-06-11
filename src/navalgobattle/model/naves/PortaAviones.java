@@ -12,8 +12,8 @@ import navalgobattle.model.exceptions.ExceptionNave;
 
 /** PortaAviones. Nave d 5 casilleros*/
 public class PortaAviones extends Nave{
-	public PortaAviones(int xMax, int yMax, int x, int y, int direccion) throws ExceptionNave{
-		super(xMax, yMax, x, y, direccion);
+	public PortaAviones(Posicion maxPos, Posicion pos, int direccion) throws ExceptionNave{
+		super(maxPos, pos, direccion);
 	}
 
 	protected int size(){

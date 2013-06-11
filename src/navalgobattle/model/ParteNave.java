@@ -21,6 +21,9 @@ public class ParteNave {
 		return this.vida;
 	}
 
+	public boolean estoyEnPosicion(Posicion posicion){
+		return this.getPosicion().equals(posicion);
+	}
 	public int setVida(int vida){
 		this.vida = vida;
 		return this.vida;
@@ -33,14 +36,18 @@ public class ParteNave {
 	 * @return boolean: es valido el movimiento?
 	 */
 	public boolean puedoMover(Posicion posicionMax, int direccion){
-		return true;
+		if(posicionMax.isMenor(this.posicion.getSiguiente(direccion)))
+			return true;
+
+		return false;
 	}
 
 
-	/** mover, mueve la parte de nave a la siguiente posicion especificada.
+	/** mover, mueve la parte de nave a la siguiente posicion especificada. Pre condicion, el movimiento es valido!.
 	 * @param int direccion: Direccion en la que se efectua el movimiento, son flags, ver Nave para mayor explicacion.
 	 */
 	public void mover(int direccion){
+		this.posicion.setSiguiente(direccion);
 	}
 
 }
