@@ -39,7 +39,7 @@
 	</target>
 
 	<target name="compilar.aplicacion" depends="setup">
-		<javac srcdir="src" destdir="${build}" includeantruntime="false" debug="yes" target="1.6">
+		<javac srcdir="src" destdir="${build}" includeantruntime="false" debug="yes" target="1.6" classpath="${libs}/titiritero.jar">
 		</javac>
 	</target>
 	
@@ -129,19 +129,34 @@
 	<target name="test" depends="ejecutar.tests, alternate-coverage-report" description="Compile, instrument ourself, run the tests and generate JUnit and coverage reports."/>
 
 	<target name="compilar.paquete" depends="test">
-		<javac srcdir="src" destdir="${build}/classes" debug="no"></javac>
+		<!--javac srcdir="src" destdir="${build}/classes" debug="no" ></javac-->
+		<javac srcdir="src" destdir="${build}/classes" includeantruntime="false" debug="yes" target="1.6" classpath="${libs}/titiritero.jar"></javac>
 	</target>
 
 	<target name="integracion-continua" depends="coverage-report, checkstyle" description="Ejecuta todas las tareas de integracion y genera los correspondientes reportes"/>
 
 	<target name="empaquetar" depends="compilar.paquete">
+		<unjar dest="${build}/classes">
+			<fileset dir="${libs}">
+				<include name="*.jar" />
+			</fileset>
+		</unjar>
 		<jar destfile="${build}/dist/navalgobattle.jar" basedir="${build}/classes">
 			<manifest>
+				<attribute name="Main-Class" value="navalgobattle.Main"/>
 				<attribute name="Specification-Version" value="${version}"/>
 				<attribute name="Implementation-Version" value="${build.number}"/>
 			</manifest>
 
 		</jar>
 	</target>
-	
+
+	<target name="ejecutar.aplicacion" depends="empaquetar">
+		<java jar="build/dist/navalgobattle.jar" fork="true">
+			<classpath>
+				<pathelement location="${build}/dist/navalgobattle.jar"/>
+				<pathelement location="${libs}/titiritero.jar"/>
+			</classpath>
+		</java>
+	</target>
 </project>
