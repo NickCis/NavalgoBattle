@@ -12,21 +12,21 @@ public class DisparoConvencionalTest extends TestCase{
 	protected NavalgoBattle juego;
 	@Before
 	public void setUp(){
+                this.juego = new NavalgoBattle();
 	}
 
 	@Test
 	public void testCrearDisparoConvensional() throws Exception {
-		//Convencional disparo = new Convencional(new Posicion(5, 5));
-		//disparo.setCosto(200);
-		//this.assertEquals(200,disparo.getCosto());
+		Convencional disparo = new Convencional(juego, new Posicion(5, 5));
+		disparo.setCosto(200);
+		this.assertEquals(200,disparo.getCosto());
 	}
 
 	@Test
 	public void testDispararDisparoConvensional() throws Exception {
-		//Convencional disparo = new Convencional(new Posicion(5, 5));
-		//disparo.disparar();
+		Convencional disparo = new Convencional(juego, new Posicion(5, 5));
 
-		//this.assertEquals(true, disparo.disparar());
+		this.assertEquals(true, disparo.disparar());
 	}
 
 }

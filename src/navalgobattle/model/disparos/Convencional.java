@@ -16,7 +16,7 @@ public class Convencional extends Disparo {
 	 * @return boolean Se efectuo el disparo?.
 	 */
 	public boolean disparar(){
-		ArrayList<Nave> naves = juego.naveEnPosicion(posicion);
+                ArrayList<Nave> naves = juego.naveEnPosicion(posicion);
 		if (naves.size() > 0){
 			for(Nave nave: naves){
 				nave.danar(this,posicion);
