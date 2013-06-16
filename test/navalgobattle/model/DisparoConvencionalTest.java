@@ -12,7 +12,7 @@ public class DisparoConvencionalTest extends TestCase{
 	protected NavalgoBattle juego;
 	@Before
 	public void setUp(){
-                this.juego = new NavalgoBattle();
+		this.juego = new NavalgoBattle();
 	}
 
 	@Test

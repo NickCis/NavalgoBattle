@@ -23,7 +23,6 @@ public class MinaContacto extends Mina {
 
 	public boolean disparar() throws ExceptionDisparo{
 		ArrayList<Nave> naves = juego.naveEnPosicion(this.posicion);
-                System.out.print(naves);
 		if (naves.size() > 0){
 			for(Nave nave: naves){
 				nave.danar(this,this.posicion);
