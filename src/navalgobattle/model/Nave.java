@@ -28,8 +28,7 @@ public class Nave {
 	}
 
 	/** Setea la posicion.
-	 * @param int x: posicion x
-	 * @param int y: posicion y
+	 * @param Posicion posicion: posicion
 	 */
 
 	public void setPosicion(Posicion posicion) throws PosicionInvalida{
@@ -44,6 +43,18 @@ public class Nave {
 
 			newPos = newPos.getSiguiente(this.direccion);
 		}
+	}
+
+	/** Devuelve las posiciones.
+	 * @return ArrayList<Posicion> posicion: posicion
+	 */
+	public ArrayList<Posicion> getPosiciones() {
+		ArrayList<Posicion> retList = new ArrayList<Posicion>();
+		for(ParteNave parte : this.partes){
+			retList.add(new Posicion(parte.getPosicion()));
+		}
+
+		return retList;
 	}
 
 	protected int vidaPorPos(){
@@ -67,6 +78,10 @@ public class Nave {
 	 */
 	public void setDireccion(int dir){
 		this.direccion = dir;
+	}
+
+	public int getDireccion(){
+		return this.direccion;
 	}
 	/** Mueve la nave.
 	 * 1) Efectua movimiento de la nave, teniendo en cuenta si rebota o no contra los costados

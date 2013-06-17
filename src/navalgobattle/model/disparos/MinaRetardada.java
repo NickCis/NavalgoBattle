@@ -1,3 +1,4 @@
+package navalgobattle.model.disparos;
 
 import java.util.ArrayList;
 import navalgobattle.model.disparos.Mina;

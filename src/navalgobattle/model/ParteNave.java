@@ -36,7 +36,7 @@ public class ParteNave {
 	 * @return boolean: es valido el movimiento?
 	 */
 	public boolean puedoMover(Posicion posicionMax, int direccion){
-		if(posicionMax.isMenor(this.posicion.getSiguiente(direccion)))
+		if(posicionMax.isMenor(this.posicion.getSiguiente(direccion)) && this.posicion.getSiguiente(direccion).isMenor(new Posicion(0,0)))
 			return true;
 
 		return false;

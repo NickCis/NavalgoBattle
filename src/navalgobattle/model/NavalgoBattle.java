@@ -42,14 +42,19 @@ public class NavalgoBattle {
 		this.setMaximaPosicion(maxPos);
 	}
 
-	void setPuntosPorTurno(int puntosPorTurno){
+	public void setPuntosPorTurno(int puntosPorTurno){
 		this.puntosPorTurno = puntosPorTurno;
 	}
-	void setJugador(Jugador jugador){
+	public void setJugador(Jugador jugador){
 		this.jugador = jugador;
 	}
-	void setMaximaPosicion(Posicion maxPos){
+
+	public void setMaximaPosicion(Posicion maxPos){
 		this.maxPos = maxPos;
+	}
+
+	public Posicion getMaximaPosicion(){
+		return this.maxPos;
 	}
 
 	/** Devuelve las nave en la posicion x y.
