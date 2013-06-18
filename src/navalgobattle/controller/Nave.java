@@ -1,24 +1,58 @@
 package navalgobattle.controller;
 
+import java.awt.Color;
+
 import java.util.ArrayList;
 
 import fiuba.algo3.titiritero.modelo.ObjetoPosicionable;
 import fiuba.algo3.titiritero.modelo.ObjetoVivo;
+import fiuba.algo3.titiritero.modelo.GameLoop;
+import fiuba.algo3.titiritero.dibujables.Cuadrado;
 
 //import navalgobattle.model.Nave;
 import navalgobattle.model.Posicion;
 
-public class Nave implements ObjetoVivo, ObjetoPosicionable{
+import navalgobattle.util.logger.Logger;
+import navalgobattle.util.logger.LogLevel;
+
+//public class Nave implements ObjetoVivo, ObjetoPosicionable{
+public class Nave implements ObjetoVivo{
 	protected navalgobattle.model.Nave nave;
+	protected GameLoop gameLoop;
 	protected Posicion posicion;
 	protected int ladoX;
 	protected int ladoY;
 
-	public Nave(navalgobattle.model.Nave nave, int ladoX, int ladoY) {
+	public Nave(navalgobattle.model.Nave nave, GameLoop gameLoop, int ladoX, int ladoY) {
+		Logger.log(LogLevel.ERROR, "Creando nave controller");
 		this.nave = nave;
+		this.gameLoop = gameLoop;
 		this.ladoX = ladoX;
 		this.ladoY = ladoY;
-		this.updatePosicion();
+		this.agregarEnJuego();
+		//this.updatePosicion();
+	}
+
+	protected void agregarEnJuego(){
+		Logger.log(LogLevel.INFO, "Agregar en juego");
+		int numeroNave = 0;
+		final Nave controllerNave = this;
+		for(Posicion pos: this.nave.getPosiciones()){
+			final Integer estaNave = new Integer(numeroNave++);
+			this.gameLoop.agregar(new Cuadrado(this.ladoX, this.ladoY, (ObjetoPosicionable) new ObjetoPosicionable(){
+				public int getX(){
+					return controllerNave.getX(estaNave);
+				}
+				public int getY(){
+					return controllerNave.getY(estaNave);
+				}
+			}){
+				public Color getColor(){
+					return Color.GREEN;
+				}
+			});
+		}
+		this.gameLoop.agregar(this);
 	}
 
 	public int getWidth(){
@@ -40,7 +74,7 @@ public class Nave implements ObjetoVivo, ObjetoPosicionable{
 				this.posicion = pos;
 		}
 		if(this.posicion == null){
-			System.out.println("Mori");
+			Logger.log(LogLevel.INFO, "Mori");
 			//TODO: Habria que sacar el ObjetoVivo, hay otra manera que guardando una referencia interna al GameLoop?
 			//FIXME: fijarse como sacar el dibujo, hay otra manera que guardando una referencia a el y gameloop?
 			this.posicion = new Posicion(-1000, -1000);
@@ -49,14 +83,27 @@ public class Nave implements ObjetoVivo, ObjetoPosicionable{
 
 	@Override
 	public void vivir() {
-		this.updatePosicion();
+		Logger.log(LogLevel.INFO, "Estoy viviendo");
+		//this.updatePosicion();
 	}
 
-	public int getX() {
-		return this.posicion.getX() *this.ladoX;
+	public int getX(int numeroNave) {
+		Logger.log(LogLevel.INFO, "xnumeroNave"+numeroNave);
+		int num = 0;
+		for(Posicion pos: this.nave.getPosiciones()){
+			if(numeroNave == num++)
+				return pos.getX() *this.ladoX;
+		}
+		return -1000;
 	}
 
-	public int getY() {
-		return this.posicion.getY() *this.ladoY;
+	public int getY(int numeroNave) {
+		Logger.log(LogLevel.INFO, "numeroNave"+numeroNave);
+		int num = 0;
+		for(Posicion pos: this.nave.getPosiciones()){
+			if(numeroNave == num++)
+				return pos.getY() *this.ladoY;
+		}
+		return -1000;
 	}
 }

@@ -17,6 +17,9 @@ import javax.swing.JPanel;
 import navalgobattle.view.Ventana;
 import navalgobattle.view.ventanas.VentanaJuego;
 
+import navalgobattle.util.logger.Logger;
+import navalgobattle.util.logger.LogLevel;
+
 public class VentanaPrincipal extends Ventana{
 	/**
 	 * Initialize the contents of the frame.
@@ -28,6 +31,7 @@ public class VentanaPrincipal extends Ventana{
 
 	protected void initialize() throws IOException {
 		super.initialize();
+		Logger.log(LogLevel.DEBUG, "Creando ventana principal");
 
 		JButton btnIniciar = new JButton("Nuevo Juego");
 		btnIniciar.addActionListener(new ActionListener() {
@@ -54,7 +58,7 @@ public class VentanaPrincipal extends Ventana{
 		this.frame.addKeyListener(new KeyListener() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				System.out.println("Key pressed");
+				Logger.log(LogLevel.INFO, "Key pressed");
 			}
 			
 			@Override
@@ -65,10 +69,8 @@ public class VentanaPrincipal extends Ventana{
 			
 			@Override
 			public void keyPressed(KeyEvent arg0) {
-			
-				System.out.println("Ping");
-				
-			}  
+				Logger.log(LogLevel.INFO, "Ping");
+			}
 		});
 	}
 }

@@ -25,7 +25,7 @@ import fiuba.algo3.titiritero.dibujables.SuperficiePanel;
 import fiuba.algo3.titiritero.modelo.GameLoop;
 import fiuba.algo3.titiritero.modelo.SuperficieDeDibujo;
 
-import navalgobattle.view.Nave;
+//import navalgobattle.view.Nave;
 import navalgobattle.view.Ventana;
 import navalgobattle.view.Botonera;
 import navalgobattle.view.botones.BotonCambioTexto;
@@ -62,12 +62,9 @@ public class VentanaJuego extends Ventana{
 		//FIXME: Cabeceada para tener el this dentro de los eventos
 		final VentanaJuego that = this;
 
-		//Ancho y alto del panel
-		this.juego = new Juego(375, 187);
-
 		final JPanel panel = new SuperficiePanel();
 		panel.setBackground(new Color(0, 0, 0));
-		panel.setBounds(42, 53, 375, 187);
+		panel.setBounds(35, 45, 400, 200);
 		this.add(panel);
 
 		this.labelTurno = new JLabel("Turno: ");
@@ -94,12 +91,16 @@ public class VentanaJuego extends Ventana{
 		botonera.add(minaContacto);
 
 		this.gameLoop = new GameLoop((SuperficieDeDibujo) panel);
-		ArrayList<Nave> naves = this.juego.agregarNavesRandom();
 
-		for(Nave nave: naves){
-			this.gameLoop.agregar(nave.getVivo());
-			this.gameLoop.agregar((Figura) nave);
-		}
+		//Ancho y alto del panel
+		this.juego = new Juego(400, 200, this.gameLoop);
+		this.juego.agregarNavesRandom();
+		//ArrayList<Nave> naves = this.juego.agregarNavesRandom();
+
+		//for(Nave nave: naves){
+		//	this.gameLoop.agregar(nave.getVivo());
+		//	this.gameLoop.agregar((Figura) nave);
+		//}
 
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
