@@ -11,6 +11,9 @@ import navalgobattle.model.disparos.Convencional;
 import navalgobattle.model.disparos.Mina;
 import navalgobattle.model.Nave;
 import navalgobattle.model.Jugador;
+
+import navalgobattle.util.logger.Logger;
+import navalgobattle.util.logger.LogLevel;
 /**
  * Clase principal del juego.
  * 
@@ -40,6 +43,14 @@ public class NavalgoBattle {
 		this();
 		this.setJugador(jugador);
 		this.setMaximaPosicion(maxPos);
+	}
+
+	public int getPuntos(){
+		return this.jugador.getPuntos();
+	}
+
+	public int getTurno(){
+		return this.turno;
 	}
 
 	public void setPuntosPorTurno(int puntosPorTurno){
@@ -79,13 +90,16 @@ public class NavalgoBattle {
 	 * @param Disparo disparo: disparo a realizarse
 	 */
 	public void disparar(Disparo disparo){
+		Logger.log(LogLevel.DEBUG, "Costo de disparo: "+disparo.getCosto());
 		this.jugador.addPuntos(- (disparo.getCosto() ) );
 	}
 	public void disparar(Convencional disparo){
+		Logger.log(LogLevel.DEBUG, "Se agrega un convencional");
 		this.disparar( (Disparo) disparo);
 		this.convencionalList.add(disparo);
 	}
 	public void disparar(Mina disparo){
+		Logger.log(LogLevel.DEBUG, "Se agrega una mina");
 		this.disparar( (Disparo) disparo);
 		this.minasList.add(disparo);
 	}

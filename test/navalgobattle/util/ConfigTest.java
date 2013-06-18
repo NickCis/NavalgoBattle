@@ -22,4 +22,8 @@ public class ConfigTest extends TestCase{
 		this.assertEquals(a, (Integer) Config.getObject("parametro1"));
 		this.assertEquals(b, (String) Config.getObject("parametro2"));
 	}
+	@Test
+	public void testReturnNull() throws Exception {
+		this.assertEquals(null, (Object) Config.getObject("cualquiercosaquenoesteguardadada"));
+	}
 }

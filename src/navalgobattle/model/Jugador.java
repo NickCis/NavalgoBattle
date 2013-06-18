@@ -7,7 +7,16 @@ package navalgobattle.model;
 public class Jugador {
 	private int puntos;
 
+
+	public Jugador(){
+		this.puntos = 0;
+	}
+
+	public Jugador(int puntos){
+		this.puntos = puntos;
+	}
 	public void addPuntos(int puntos){
+		this.puntos += puntos;
 	}
 
 	public int getPuntos(){

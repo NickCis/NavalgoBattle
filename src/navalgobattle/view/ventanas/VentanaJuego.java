@@ -17,13 +17,15 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import fiuba.algo3.titiritero.modelo.GameLoop;
+import fiuba.algo3.titiritero.modelo.ObjetoVivo;
+import fiuba.algo3.titiritero.modelo.SuperficieDeDibujo;
+
 import fiuba.algo3.titiritero.dibujables.Circulo;
 import fiuba.algo3.titiritero.dibujables.Figura;
 import fiuba.algo3.titiritero.dibujables.Cuadrado;
 import fiuba.algo3.titiritero.dibujables.Imagen;
 import fiuba.algo3.titiritero.dibujables.SuperficiePanel;
-import fiuba.algo3.titiritero.modelo.GameLoop;
-import fiuba.algo3.titiritero.modelo.SuperficieDeDibujo;
 
 //import navalgobattle.view.Nave;
 import navalgobattle.view.Ventana;
@@ -34,6 +36,11 @@ import navalgobattle.view.botones.BotonSeleccionarDisparo;
 import navalgobattle.controller.Juego;
 import navalgobattle.controller.TipoDisparo;
 
+import navalgobattle.util.logger.Logger;
+import navalgobattle.util.logger.LogLevel;
+
+/** Ventana de juego.
+ */
 public class VentanaJuego extends Ventana{
 
 	protected GameLoop gameLoop;
@@ -41,7 +48,6 @@ public class VentanaJuego extends Ventana{
 	protected JLabel labelTurno;
 	protected JLabel labelPuntos;
 	protected JLabel labelDisparo;
-	//TODO: Esto es MUY cabeza arreglar
 	protected TipoDisparo disparo; 
 
 	/**
@@ -95,12 +101,6 @@ public class VentanaJuego extends Ventana{
 		//Ancho y alto del panel
 		this.juego = new Juego(400, 200, this.gameLoop);
 		this.juego.agregarNavesRandom();
-		//ArrayList<Nave> naves = this.juego.agregarNavesRandom();
-
-		//for(Nave nave: naves){
-		//	this.gameLoop.agregar(nave.getVivo());
-		//	this.gameLoop.agregar((Figura) nave);
-		//}
 
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -120,16 +120,32 @@ public class VentanaJuego extends Ventana{
 		});
 		btnIniciar.setBounds(325, 16, 92, 25);
 		this.add(btnIniciar);
+
+
+		//Agregamos un ObjetoVivo para que se actualice la informacion en pantalla
+		this.gameLoop.agregar(new ObjetoVivo(){
+			@Override
+			public void vivir(){
+				Logger.log(LogLevel.DEBUG, "Relodeo muchoo =)");
+				that.setTurno();
+				that.setPuntos();
+			}
+		});
 	}
 
+	public void setTurno(){
+		this.setTurno(this.juego.getTurno());
+	}
 	public void setTurno(int turno){
 		this.labelTurno.setText("Turno :"+turno);
+	}
+	public void setPuntos(){
+		this.setPuntos(this.juego.getPuntos());
 	}
 	public void setPuntos(int puntos){
 		this.setPuntos(""+puntos);
 	}
 	public void setPuntos(String txt){
-		this.gameLoop.iniciarEjecucion();
 		this.labelPuntos.setText("Puntos :"+txt);
 	}
 

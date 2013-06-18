@@ -19,7 +19,7 @@ public enum LogLevel {
 	}
 
 	public boolean doLog(LogLevel level){
-		if((this.level & level.getLevel()) != 0)
+		if((this.level & level.getLevel()) == level.getLevel())
 			return true;
 		return false;
 	}

@@ -9,6 +9,10 @@ import navalgobattle.model.NavalgoBattle;
 import navalgobattle.model.Posicion;
 
 
+import navalgobattle.util.logger.Logger;
+import navalgobattle.util.logger.LogLevel;
+
+
 /** Clase MinaRetardada.
  * Extiende de Mina. Este tipo de disparo es el que se efectua cuando la nave se mueve a la posicion de la mina, 
  * (se tocan en la misma posicion).
@@ -19,24 +23,23 @@ public class MinaRetardada extends Mina {
 
 	public MinaRetardada(NavalgoBattle nb, Posicion pos){
 		super(nb, pos);
+		this.disparo = false;
 	}
 	/*
 	 * @return boolean Se efectuo el disparo?.
 	 * 
 	 */
 	public boolean disparar() throws ExceptionDisparo{
-
-		int momentoDeDisparo = retardo - 1; // Va descontando 1 del retardo hasta llegar a 0
-		this.setRetardo(momentoDeDisparo); // Guarda el nuevo retardo ya descontado
-		if (momentoDeDisparo == 0){ 
+		Logger.log(LogLevel.DEBUG, "Mina Retardad["+this.getPosicion().getX()+","+this.getPosicion().getY()+"]: turnos restantes: " + retardo);
+		if (this.retardo-- <= 0){
 			ArrayList<Nave> naves = juego.naveEnPosicion(this.posicion);
 			if (naves.size() > 0){ //Si encontro alguna nave la da~na
 				for(Nave nave: naves){
-
 					nave.danar(this,this.posicion);
-
-				}  
+				}
 			}
+			Logger.log(LogLevel.DEBUG, "-->Mina Retardad: BUM! retardo: " + retardo);
+			this.disparo = true;
 			return true;
 		}
 		return false;

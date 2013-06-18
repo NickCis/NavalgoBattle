@@ -16,6 +16,7 @@ public class MinaContacto extends Mina {
 
 	public MinaContacto(NavalgoBattle nb, Posicion pos){
 		super(nb, pos);
+		this.disparo = false;
 	}
 	/*
 	 * @return boolean Se efectuo el disparo?.
@@ -27,6 +28,7 @@ public class MinaContacto extends Mina {
 			for(Nave nave: naves){
 				nave.danar(this,this.posicion);
 			}
+			this.disparo = true;
 			return true;
 		}
 		return false;

@@ -15,6 +15,7 @@ public abstract class Disparo {
 	protected Posicion posicion;
 	protected int costo;
 	protected NavalgoBattle juego;
+	protected boolean disparo = true;
 
 	public Disparo(NavalgoBattle nb, Posicion posicion){
 		this.posicion = posicion;
@@ -43,5 +44,14 @@ public abstract class Disparo {
 		costo = c;
 	}
 
+	/** Disparo?. Si devuelve true significa qe el disparo ya no esta vivo, de lo contrario, significa qe si, sigue vivo.
+	 */
+	public boolean disparo(){
+		return this.disparo;
+	}
+
+	public Posicion getPosicion(){
+		return new Posicion(this.posicion);
+	}
 }
 

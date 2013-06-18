@@ -21,6 +21,7 @@ public class Main {
 		Config.setObject("maxPos", new Posicion(10, 10));
 
 		Logger.initialice();
+		Logger.setLogLevel(LogLevel.DEBUG);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
