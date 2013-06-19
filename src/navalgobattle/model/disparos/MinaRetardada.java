@@ -57,7 +57,7 @@ public class MinaRetardada extends Mina {
 	/** Setea la Radio
 	 * @param int r
 	 */
-	public void setRadio(int r) throws ExceptionDisparo{
+	public void setRadio(int r){
 		radio = r;
 	}
 	/** Setea la Costo

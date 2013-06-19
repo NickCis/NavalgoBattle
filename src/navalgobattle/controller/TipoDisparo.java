@@ -2,7 +2,8 @@ package navalgobattle.controller;
 
 public enum TipoDisparo {
 	CONVENCIONAL,
-	MINA,
-	MINA_RETARDADA,
+	MINA_SIMPLE,
+	MINA_DOBLE,
+	MINA_TRIPLE,
 	MINA_CONTACTO
 }

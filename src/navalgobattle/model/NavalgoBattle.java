@@ -49,6 +49,18 @@ public class NavalgoBattle {
 		return this.jugador.getPuntos();
 	}
 
+	/** Termino el juego?.
+	 * La razon por que termino si se acabaron los puntos o mataron las naves se puede decidir obteniendo la lista de naves y puntos
+	 * @return boolean: devuelve true si el juego ya termino.
+	 */
+	public boolean terminoJuego(){
+		return (this.getPuntos() <= 0 || this.navesList.size() == 0);
+	}
+
+	public ArrayList<Nave> getNaves(){
+		return this.navesList;
+	}
+
 	public int getTurno(){
 		return this.turno;
 	}

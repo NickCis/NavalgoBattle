@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.lang.Math;
 
 
+import java.util.Hashtable;
+import java.util.Enumeration;
+import java.lang.reflect.Constructor;
+
+
 import fiuba.algo3.titiritero.modelo.ObjetoPosicionable;
 
 import navalgobattle.model.Jugador;
@@ -25,6 +30,8 @@ import fiuba.algo3.titiritero.modelo.GameLoop;
 //import navalgobattle.controller.Disparo;
 
 import navalgobattle.controller.TipoDisparo;
+import navalgobattle.controller.event.EventJuegoTerminado;
+import navalgobattle.controller.event.EventJuegoSiguienteTurno;
 
 import navalgobattle.util.config.Config;
 import navalgobattle.util.logger.Logger;
@@ -40,6 +47,8 @@ public class Juego {
 	protected int width;
 	protected int height;
 	protected GameLoop gameLoop;
+	protected EventJuegoTerminado eventJuegoTerminado = null;
+	protected EventJuegoSiguienteTurno eventJuegoSiguienteTurno = null;
 
 	/** Constructor.
 	 * @param int width: ancho en pixel del panel.
@@ -51,7 +60,7 @@ public class Juego {
 		this.height = height;
 		this.gameLoop = gameLoop;
 		//TODO: Sacar jugador de aca, tiene qe levantarlo de algun lado.
-		this.juego = new NavalgoBattle(new Posicion((Posicion) Config.getObject("maxPos")), new Jugador(1000));
+		this.juego = new NavalgoBattle(new Posicion((Posicion) Config.getObject("maxPos")), new Jugador((Integer) Config.getObject("puntosPorDefecto")));
 	}
 
 	/** Devuelve los puntos.
@@ -69,20 +78,27 @@ public class Juego {
 	 * TODO: falta implementar que cree todas las naves levantando la cantidad y tipo desde Config.
 	 */
 	public void agregarNavesRandom(){
+		Hashtable<Constructor, Integer> navesDefault = (Hashtable<Constructor, Integer>) Config.getObject("navesDefault");
+		Enumeration<Constructor> e = navesDefault.keys();
+
+		while(e.hasMoreElements()){
+			Constructor cons = e.nextElement();
+			int number = navesDefault.get(cons);
+			while((number--)>0)
+				this.agregarNaveRandom(cons);
+		}
+	}
+
+	protected void agregarNaveRandom(Constructor cons){
 		try {
 			Posicion randomPos = this.randomPosicion();
 			int randomDir = this.randomDireccion();
-
-			navalgobattle.model.Nave modelNave = new Lancha(this.juego.getMaximaPosicion(), randomPos, randomDir);
-			Logger.log(LogLevel.DEBUG, "Nave creada x:"+randomPos.getX()+" y:"+randomPos.getY()+" dir:"+randomDir);
-
+			navalgobattle.model.Nave modelNave = (navalgobattle.model.Nave) cons.newInstance(this.juego.getMaximaPosicion(), randomPos, randomDir);
 			navalgobattle.controller.Nave controllerNave = new navalgobattle.controller.Nave(modelNave, this.gameLoop, this.squareWidth(), this.squareHeight());
-
 			this.juego.addNave(modelNave);
-
-		}catch(Exception e) {
-			Logger.log(LogLevel.ERROR, "Excepcion que nunca deberia pasar");
-			//TODO: Hacer algo con la excepcion?,, realmente nunca deberia llegar por la forma que se crean las posiciones random
+		}catch(Exception e){
+			Logger.log(LogLevel.WARN, "Error agregando nave. Se vuelve a intentar.");
+			this.agregarNaveRandom(cons);
 		}
 	}
 
@@ -131,20 +147,34 @@ public class Juego {
 		switch(disparo){
 			case CONVENCIONAL:
 				modelDisparo = new Convencional(this.juego, posicion);
+				//TODO: Costos se podrian pasar a la configuracion del config y levantarlos con (Integer) Config.getObjeto("costoConvencional")
+				modelDisparo.setCosto(200);
 				this.juego.disparar((Convencional) modelDisparo);
 				break;
-			case MINA:
-				modelDisparo = new Mina(this.juego, posicion);
+			case MINA_SIMPLE:
+				modelDisparo = new MinaRetardada(this.juego, posicion);
+				modelDisparo.setCosto(50);
+				((MinaRetardada) modelDisparo).setRetardo(3);
 				this.juego.disparar((Mina) modelDisparo);
+				break;
+			case MINA_DOBLE:
+				modelDisparo = new MinaRetardada(this.juego, posicion);
+				modelDisparo.setCosto(100);
+				((MinaRetardada) modelDisparo).setRetardo(3);
+				((MinaRetardada) modelDisparo).setRadio(1);
+				this.juego.disparar((MinaRetardada) modelDisparo);
+				break;
+			case MINA_TRIPLE:
+				modelDisparo = new MinaRetardada(this.juego, posicion);
+				modelDisparo.setCosto(125);
+				((MinaRetardada) modelDisparo).setRetardo(3);
+				((MinaRetardada) modelDisparo).setRadio(2);
+				this.juego.disparar((MinaRetardada) modelDisparo);
 				break;
 			case MINA_CONTACTO:
 				modelDisparo = new MinaContacto(this.juego, posicion);
+				modelDisparo.setCosto(150);
 				this.juego.disparar((MinaContacto) modelDisparo);
-				break;
-			case MINA_RETARDADA:
-				modelDisparo = new MinaRetardada(this.juego, posicion);
-				((MinaRetardada) modelDisparo).setRetardo(5);
-				this.juego.disparar((MinaRetardada) modelDisparo);
 				break;
 		}
 
@@ -153,6 +183,12 @@ public class Juego {
 		try { 
 			this.juego.siguienteTurno();
 		}catch(Exception e){ Logger.log(LogLevel.ERROR, "exception");} //TODO: Fijarse que hacer con la exceptcion
+
+		if(this.juego.terminoJuego() && this.eventJuegoTerminado != null)
+			this.eventJuegoTerminado.juegoTermino(this.juego.getNaves().size() == 0, this.juego.getPuntos());
+
+		if(this.eventJuegoSiguienteTurno != null)
+			this.eventJuegoSiguienteTurno.siguienteTurno();
 	}
 
 	/** Devuelve una posicion random.
@@ -177,5 +213,18 @@ public class Juego {
 		if ((dir & 1) == 0 && (dir & 4) == 0 )
 			return this.randomDireccion();
 		return dir;
+	}
+	/** Setea el evento de juego terminado
+	 * @param EventJuegoTerminado eventJuegoTerminado: evento
+	 */
+	public void addJuegoTerminadoListener(EventJuegoTerminado eventJuegoTerminado){
+		this.eventJuegoTerminado = eventJuegoTerminado;
+	}
+
+	/** Setea el evento de siguiente turno
+	 * @param EventJuegoSiguienteTurno eventJuegoSiguienteTurno: evento
+	 */
+	public void addJuegoSiguienteTurnoListener(EventJuegoSiguienteTurno eventJuegoSiguienteTurno){
+		this.eventJuegoSiguienteTurno = eventJuegoSiguienteTurno;
 	}
 }

@@ -31,10 +31,23 @@ public abstract class Ventana {
 		this.close();
 		this.frame = new JFrame();
 		this.frame.setForeground(new Color(0, 0, 0));
-		this.frame.setBounds(100, 100, 450, 300);
+		this.frame.setBounds(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.getContentPane().setLayout(null);
 		this.frame.setFocusable(true);
+	}
+
+	public int getX(){
+		return 100;
+	}
+	public int getY(){
+		return 100;
+	}
+	public int getWidth(){
+		return 450;
+	}
+	public int getHeight(){
+		return 300;
 	}
 
 	public void setVisible(boolean bol){

@@ -13,9 +13,12 @@ import navalgobattle.model.Posicion;
 import navalgobattle.model.Disparo;
 import navalgobattle.model.disparos.Convencional;
 
+import navalgobattle.util.logger.Logger;
+
 public class DestructorTest extends TestCase{
 	@Before
 	public void setUp(){
+		Logger.initialice();
 	}
 
 	@Test

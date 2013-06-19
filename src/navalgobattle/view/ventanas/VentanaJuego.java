@@ -35,6 +35,8 @@ import navalgobattle.view.botones.BotonSeleccionarDisparo;
 
 import navalgobattle.controller.Juego;
 import navalgobattle.controller.TipoDisparo;
+import navalgobattle.controller.event.EventJuegoTerminado;
+import navalgobattle.controller.event.EventJuegoSiguienteTurno;
 
 import navalgobattle.util.logger.Logger;
 import navalgobattle.util.logger.LogLevel;
@@ -58,6 +60,9 @@ public class VentanaJuego extends Ventana{
 	}
 
 
+	public int getWidth(){
+		return 600;
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 * @throws IOException 
@@ -89,10 +94,12 @@ public class VentanaJuego extends Ventana{
 
 		BotonSeleccionarDisparo convencional = new BotonSeleccionarDisparo(TipoDisparo.CONVENCIONAL, "Convencional");
 		botonera.add(convencional);
-		BotonSeleccionarDisparo mina = new BotonSeleccionarDisparo(TipoDisparo.MINA, "Mina");
-		botonera.add(mina);
-		BotonSeleccionarDisparo minaRetartada = new BotonSeleccionarDisparo(TipoDisparo.MINA_RETARDADA, "Mina Retardada");
-		botonera.add(minaRetartada);
+		BotonSeleccionarDisparo minaSimple = new BotonSeleccionarDisparo(TipoDisparo.MINA_SIMPLE, "Mina simple");
+		botonera.add(minaSimple);
+		BotonSeleccionarDisparo minaDoble = new BotonSeleccionarDisparo(TipoDisparo.MINA_DOBLE, "Mina doble");
+		botonera.add(minaDoble);
+		BotonSeleccionarDisparo minaTriple = new BotonSeleccionarDisparo(TipoDisparo.MINA_TRIPLE, "Mina Triple");
+		botonera.add(minaTriple);
 		BotonSeleccionarDisparo minaContacto = new BotonSeleccionarDisparo(TipoDisparo.MINA_CONTACTO, "Mina Contacto");
 		botonera.add(minaContacto);
 
@@ -116,19 +123,58 @@ public class VentanaJuego extends Ventana{
 		btnIniciar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				that.gameLoop.iniciarEjecucion();
+				that.setTurno();
+				that.setPuntos();
 			}
 		});
 		btnIniciar.setBounds(325, 16, 92, 25);
 		this.add(btnIniciar);
 
 
-		//Agregamos un ObjetoVivo para que se actualice la informacion en pantalla
-		this.gameLoop.agregar(new ObjetoVivo(){
-			@Override
-			public void vivir(){
-				Logger.log(LogLevel.DEBUG, "Relodeo muchoo =)");
+		////Agregamos un ObjetoVivo para que se actualice la informacion en pantalla
+		//this.gameLoop.agregar(new ObjetoVivo(){
+		//	@Override
+		//	public void vivir(){
+		//		Logger.log(LogLevel.DEBUG, "Relodeo muchoo =)");
+		//		that.setTurno();
+		//		that.setPuntos();
+		//	}
+		//});
+		this.juego.addJuegoSiguienteTurnoListener(new EventJuegoSiguienteTurno(){
+			public void siguienteTurno(){
+				Logger.log(LogLevel.DEBUG, "Se llama evento de siguiente turno");
 				that.setTurno();
 				that.setPuntos();
+			}
+		});
+		this.juego.addJuegoTerminadoListener(new EventJuegoTerminado(){
+			public void juegoTermino(final boolean gano, final int puntos){
+				Logger.log(LogLevel.DEBUG, "**Fin de juego. Gano: "+gano+" Puntos:"+puntos);
+				//TODO: hacer clase Alert y pasarlo ahi, en vez de hacer esto feo.
+				new Ventana(){
+					public void initialize() throws IOException{
+						super.initialize();
+						JLabel texto = new JLabel("**Fin de juego. Gano: "+gano+" Puntos:"+puntos);
+						JButton cerrar = new JButton("Cerrar");
+						final Ventana alert = this;
+						cerrar.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								that.close();
+								alert.close();
+							}
+							public int getWidth(){
+								return 400;
+							}
+							public int getHeight(){
+								return 200;
+							}
+						});
+						cerrar.setBounds(200, 150, 92, 25);
+						this.add(cerrar);
+						texto.setBounds(20, 10, 350, 150);
+						this.add(texto);
+					}
+				};
 			}
 		});
 	}
