@@ -62,9 +62,9 @@ public class MinaRetardada extends Mina {
 	
 	/** Devuelve las posiciones que se encuentran a un radio de distancia de la mina.
 	 * Como hay mas de una posicion devuelve una lista.
-	 * Si radio = 0 (Mina submarina puntual con retardo) entonces en el array solo habrá una posicion que es la de la mina
-	 * Si radio = 1 (Mina submarina doble con retardo) tendré la posicion actual + las posiciones adyacentes en un radio de 1 casilla
-	 * Si radio = 2 (Mina submarina triple con retardo) tendré la posición actual + las posiciones adyacentes en un radio de 2 casillas
+	 * Si radio = 0 (Mina submarina puntual con retardo) entonces en el array solo habra una posicion que es la de la mina
+	 * Si radio = 1 (Mina submarina doble con retardo) tendre la posicion actual + las posiciones adyacentes en un radio de 1 casilla
+	 * Si radio = 2 (Mina submarina triple con retardo) tendre la posicion actual + las posiciones adyacentes en un radio de 2 casillas
 	 * @param int radio
 	 * @param Posicion posicion: posicion de la mina y a partir de la cual se calcula las posiciones a un radio de distancia
 	 * @return ArrayList<Posicion> posiciones a  un radio de distancia .
