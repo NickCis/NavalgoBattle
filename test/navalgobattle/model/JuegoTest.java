@@ -84,10 +84,9 @@ public class JuegoTest extends TestCase{
                this.assertEquals(juego.getNaves().size(), 0);
         }
         public void testPuntosDuranteElJuego()  throws Exception{
+          NavalgoBattle juego = new NavalgoBattle(pos,jugador);  
           jugador.addPuntos(10000);
           juego.setPuntosPorTurno(10);
-          juego.setJugador(jugador);
-          juego.setMaximaPosicion(pos);
           Convencional disparo1 = new Convencional(juego,pos);
           disparo1.setCosto(200);
           juego.disparar(disparo1);
