@@ -62,6 +62,7 @@ public class JuegoTest extends TestCase{
                juego.disparar(new MinaContacto(juego,posiciones.get(1).getSiguiente(1)));
                juego.siguienteTurno();
                this.assertEquals(nave.estaViva(), false);
+               this.assertEquals(juego.terminoJuego(), true);
         }
         public void testMatarNaveConMinaRetardada()  throws Exception{
         //se matan en el mismo turno para hacer el test
@@ -69,15 +70,35 @@ public class JuegoTest extends TestCase{
                juego.setMaximaPosicion(pos);
                juego.addNave(nave);
                ArrayList<Posicion> posiciones = nave.getPosiciones();
+              
                MinaRetardada mina1 = new MinaRetardada(juego,posiciones.get(1));
                mina1.setRadio(2);
                mina1.setRetardo(1);
-               //Disparo mina2 = new MinaContacto(juego,posiciones.get(1).getSiguiente(1))
-               juego.disparar(mina1);
-               //juego.disparar(mina2);
-               juego.siguienteTurno();
-               juego.siguienteTurno();
-               this.assertEquals(nave.estaViva(), false);
-        }
 
+               juego.disparar(mina1);
+
+               juego.siguienteTurno();
+               juego.siguienteTurno();
+              
+               this.assertEquals(nave.estaViva(), false);
+               this.assertEquals(juego.getNaves().size(), 0);
+        }
+        public void testPuntosDuranteElJuego()  throws Exception{
+          jugador.addPuntos(10000);
+          juego.setPuntosPorTurno(10);
+          juego.setJugador(jugador);
+          juego.setMaximaPosicion(pos);
+          Convencional disparo1 = new Convencional(juego,pos);
+          disparo1.setCosto(200);
+          juego.disparar(disparo1);
+          juego.siguienteTurno();
+          MinaContacto disparo2 = new MinaContacto(juego,pos);
+          disparo2.setCosto(100);
+          juego.disparar(disparo2);
+          juego.siguienteTurno();
+          
+          this.assertEquals(juego.getTurno(),2 );
+          this.assertEquals(jugador.getPuntos(),9680 );
+        }
+        
 }

@@ -66,7 +66,7 @@ public class NavalgoBattle {
 	}
 
 	public void setPuntosPorTurno(int puntosPorTurno){
-		this.puntosPorTurno = puntosPorTurno;
+		this.puntosPorTurno = -puntosPorTurno;
 	}
 	public void setJugador(Jugador jugador){
 		this.jugador = jugador;
