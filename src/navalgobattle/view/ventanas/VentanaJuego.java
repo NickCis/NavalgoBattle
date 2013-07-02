@@ -34,9 +34,10 @@ import navalgobattle.view.botones.BotonCambioTexto;
 import navalgobattle.view.botones.BotonSeleccionarDisparo;
 
 import navalgobattle.controller.Juego;
-import navalgobattle.controller.TipoDisparo;
 import navalgobattle.controller.event.EventJuegoTerminado;
 import navalgobattle.controller.event.EventJuegoSiguienteTurno;
+
+import navalgobattle.model.disparos.TipoDisparo;
 
 import navalgobattle.util.logger.Logger;
 import navalgobattle.util.logger.LogLevel;

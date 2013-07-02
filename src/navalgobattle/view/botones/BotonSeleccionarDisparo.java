@@ -2,7 +2,7 @@ package navalgobattle.view.botones;
 
 import javax.swing.JButton;
 
-import navalgobattle.controller.TipoDisparo;
+import navalgobattle.model.disparos.TipoDisparo;
 
 import navalgobattle.view.Boton;
 import navalgobattle.view.Ventana;

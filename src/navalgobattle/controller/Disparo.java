@@ -14,6 +14,7 @@ import fiuba.algo3.titiritero.dibujables.Elipse;
 
 //import navalgobattle.model.Disparo;
 import navalgobattle.model.Posicion;
+import navalgobattle.model.disparos.TipoDisparo;
 
 import navalgobattle.util.logger.Logger;
 import navalgobattle.util.logger.LogLevel;
@@ -27,6 +28,7 @@ public class Disparo implements ObjetoVivo{
 	protected Posicion posicion;
 	protected int ladoX;
 	protected int ladoY;
+	protected TipoDisparo tipo;
 
 	/** Constructor.
 	 * @param navalgobattle.model.Disparo disparo: disparo del modelo el cual es representada por esta nave del controller.
@@ -34,11 +36,12 @@ public class Disparo implements ObjetoVivo{
 	 * @param int ladoX: ancho en pixeles de la posicion (un cuadrado).
 	 * @param int ladoY: alto en pixeles de la posicion (un cuadrado).
 	 */
-	public Disparo(navalgobattle.model.Disparo disparo, GameLoop gameLoop, int ladoX, int ladoY) {
+	public Disparo(navalgobattle.model.Disparo disparo, GameLoop gameLoop, int ladoX, int ladoY, TipoDisparo tipo) {
 		this.disparo = disparo;
 		this.gameLoop = gameLoop;
 		this.ladoX = ladoX;
 		this.ladoY = ladoY;
+		this.tipo = tipo;
 		this.agregarEnJuego();
 	}
 
@@ -46,6 +49,27 @@ public class Disparo implements ObjetoVivo{
 	 */
 	protected void agregarEnJuego(){
 		final Disparo controllerDisparo = this;
+		// FIXME: repito, esto es un asco
+		Color color = Color.BLUE;
+		switch(this.tipo){
+			case CONVENCIONAL:
+				color = Color.BLUE;
+				break;
+			case MINA_SIMPLE:
+				color = Color.GREEN;
+				break;
+			case MINA_DOBLE:
+				color = Color.RED;
+				break;
+			case MINA_TRIPLE:
+				color = Color.YELLOW;
+				break;
+			case MINA_CONTACTO:
+				color = Color.CYAN;
+				break;
+		}
+
+		final Color tColor = color;
 		//XXX: Se usan clases Anonimas, se podria hacer de una manera mas linda. Ademas se hardcodea el color.
 		this.gameLoop.agregar(new Elipse(this.ladoX, this.ladoY, (ObjetoPosicionable) new ObjetoPosicionable(){
 			public int getX(){
@@ -56,7 +80,7 @@ public class Disparo implements ObjetoVivo{
 			}
 		}){
 			public Color getColor(){
-				return Color.RED;
+				return tColor;
 			}
 		});
 		//XXX: Actualmente el objeto vivo no hace nada, se puede implementar para hacer una animacion o movimiento fluido

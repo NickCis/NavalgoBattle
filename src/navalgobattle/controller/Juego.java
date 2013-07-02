@@ -11,6 +11,7 @@ import navalgobattle.model.NavalgoBattle;
 //import navalgobattle.model.Nave;
 import navalgobattle.model.naves.Lancha;
 //import navalgobattle.model.Disparo;
+import navalgobattle.model.disparos.TipoDisparo;
 import navalgobattle.model.disparos.Convencional;
 import navalgobattle.model.disparos.Mina;
 import navalgobattle.model.disparos.MinaRetardada;
@@ -23,7 +24,7 @@ import fiuba.algo3.titiritero.modelo.GameLoop;
 
 //import navalgobattle.controller.Disparo;
 
-import navalgobattle.controller.TipoDisparo;
+
 import navalgobattle.controller.event.EventJuegoTerminado;
 import navalgobattle.controller.event.EventJuegoSiguienteTurno;
 
@@ -124,42 +125,8 @@ public class Juego {
 	public void disparar(TipoDisparo disparo, int x, int y){
 		Posicion posicion = new Posicion(this.x2pos(x), this.y2pos(y));
 		Logger.log(LogLevel.INFO, disparo+" x:"+posicion.getX()+" y:"+posicion.getY());
-		navalgobattle.model.Disparo modelDisparo = null;
-		switch(disparo){
-			case CONVENCIONAL:
-				modelDisparo = new Convencional(this.juego, posicion);
-				//TODO: Costos se podrian pasar a la configuracion del config y levantarlos con (Integer) Config.getObjeto("costoConvencional")
-				modelDisparo.setCosto(200);
-				this.juego.disparar((Convencional) modelDisparo);
-				break;
-			case MINA_SIMPLE:
-				modelDisparo = new MinaRetardada(this.juego, posicion);
-				modelDisparo.setCosto(50);
-				((MinaRetardada) modelDisparo).setRetardo(3);
-				this.juego.disparar((Mina) modelDisparo);
-				break;
-			case MINA_DOBLE:
-				modelDisparo = new MinaRetardada(this.juego, posicion);
-				modelDisparo.setCosto(100);
-				((MinaRetardada) modelDisparo).setRetardo(3);
-				((MinaRetardada) modelDisparo).setRadio(1);
-				this.juego.disparar((MinaRetardada) modelDisparo);
-				break;
-			case MINA_TRIPLE:
-				modelDisparo = new MinaRetardada(this.juego, posicion);
-				modelDisparo.setCosto(125);
-				((MinaRetardada) modelDisparo).setRetardo(3);
-				((MinaRetardada) modelDisparo).setRadio(2);
-				this.juego.disparar((MinaRetardada) modelDisparo);
-				break;
-			case MINA_CONTACTO:
-				modelDisparo = new MinaContacto(this.juego, posicion);
-				modelDisparo.setCosto(150);
-				this.juego.disparar((MinaContacto) modelDisparo);
-				break;
-		}
-
-		navalgobattle.controller.Disparo controllerDisparo = new navalgobattle.controller.Disparo(modelDisparo, this.gameLoop, this.squareWidth(), this.squareHeight());
+		navalgobattle.model.Disparo modelDisparo = this.juego.doDisparar(disparo, posicion);
+		navalgobattle.controller.Disparo controllerDisparo = new navalgobattle.controller.Disparo(modelDisparo, this.gameLoop, this.squareWidth(), this.squareHeight(), disparo);
 
 		try { 
 			this.juego.siguienteTurno();

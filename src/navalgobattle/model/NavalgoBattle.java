@@ -13,6 +13,9 @@ import navalgobattle.model.Disparo;
 import navalgobattle.model.Posicion;
 import navalgobattle.model.disparos.Convencional;
 import navalgobattle.model.disparos.Mina;
+import navalgobattle.model.disparos.MinaRetardada;
+import navalgobattle.model.disparos.MinaContacto;
+import navalgobattle.model.disparos.TipoDisparo;
 import navalgobattle.model.Nave;
 import navalgobattle.model.Jugador;
 
@@ -22,6 +25,7 @@ import navalgobattle.util.logger.Logger;
 import navalgobattle.util.logger.LogLevel;
 
 import navalgobattle.util.config.Config;
+
 /**
  * Clase principal del juego.
  * 
@@ -105,6 +109,49 @@ public class NavalgoBattle {
 		return naves;
 	}
 
+
+	/** Metodo usado para agregar un disparo.
+	 * Este metodo deberia ser llamado por el controller, cuando el view le dice que se hizo un disparo.
+	 * Debe guardar el disparo en la lista correspondiente, restarle puntos al jugador.
+	 * @param TipoDisparo tipodisparo: disparo a realizarse
+	 * @param Posicion posicion: posicion
+	 */
+	public Disparo doDisparar(TipoDisparo tipo, Posicion posicion){
+		Disparo disparo = null;
+		switch(tipo){
+			case CONVENCIONAL:
+				disparo = new Convencional(this, posicion);
+				disparo.setCosto(200);
+				this.disparar((Convencional) disparo);
+				break;
+			case MINA_SIMPLE:
+				disparo = new MinaRetardada(this, posicion);
+				disparo.setCosto(50);
+				((MinaRetardada) disparo).setRetardo(3);
+				this.disparar((Mina) disparo);
+				break;
+			case MINA_DOBLE:
+				disparo = new MinaRetardada(this, posicion);
+				disparo.setCosto(100);
+				((MinaRetardada) disparo).setRetardo(3);
+				((MinaRetardada) disparo).setRadio(1);
+				this.disparar((MinaRetardada) disparo);
+				break;
+			case MINA_TRIPLE:
+				disparo = new MinaRetardada(this, posicion);
+				disparo.setCosto(125);
+				((MinaRetardada) disparo).setRetardo(3);
+				((MinaRetardada) disparo).setRadio(2);
+				this.disparar((MinaRetardada) disparo);
+				break;
+			case MINA_CONTACTO:
+				disparo = new MinaContacto(this, posicion);
+				disparo.setCosto(150);
+				this.disparar((MinaContacto) disparo);
+				break;
+		}
+		return disparo;
+	}
 	/** Metodo usado para agregar un disparo.
 	 * Este metodo deberia ser llamado por el controller, cuando el view le dice que se hizo un disparo.
 	 * Debe guardar el disparo en la lista correspondiente, restarle puntos al jugador.

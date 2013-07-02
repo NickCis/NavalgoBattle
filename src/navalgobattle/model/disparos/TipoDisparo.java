@@ -1,4 +1,4 @@
-package navalgobattle.controller;
+package navalgobattle.model.disparos;
 
 public enum TipoDisparo {
 	CONVENCIONAL,
