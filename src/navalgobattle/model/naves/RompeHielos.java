@@ -27,4 +27,8 @@ public class RompeHielos extends Nave {
 	protected int size() {
 		return 4;
 	}
+
+	public TipoNave getTipo(){
+		return TipoNave.ROMPEHIELOS;
+	}
 }

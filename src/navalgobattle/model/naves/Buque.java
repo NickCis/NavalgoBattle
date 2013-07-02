@@ -25,4 +25,8 @@ public class Buque extends Nave{
 			this.partes = new ArrayList<ParteNave>();
 	}
 
+	public TipoNave getTipo(){
+		return TipoNave.BUQUE;
+	}
+
 }

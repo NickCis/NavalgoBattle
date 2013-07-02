@@ -3,12 +3,6 @@ package navalgobattle.controller;
 import java.util.ArrayList;
 import java.lang.Math;
 
-
-import java.util.Hashtable;
-import java.util.Enumeration;
-import java.lang.reflect.Constructor;
-
-
 import fiuba.algo3.titiritero.modelo.ObjetoPosicionable;
 
 import navalgobattle.model.Jugador;
@@ -37,6 +31,8 @@ import navalgobattle.util.config.Config;
 import navalgobattle.util.logger.Logger;
 import navalgobattle.util.logger.LogLevel;
 
+import navalgobattle.model.event.EventAgregarNave;
+
 
 /** Controlador - Juego.
  * Se encarga de recibir acciones del view y efectuarlas usando al model como backend.
@@ -61,6 +57,19 @@ public class Juego {
 		this.gameLoop = gameLoop;
 		//TODO: Sacar jugador de aca, tiene qe levantarlo de algun lado.
 		this.juego = new NavalgoBattle(new Posicion((Posicion) Config.getObject("maxPos")), new Jugador((Integer) Config.getObject("puntosPorDefecto")));
+
+		final Juego that = this;
+		this.juego.addAgregarNaveListener(new EventAgregarNave(){
+			public void agregarNave(navalgobattle.model.Nave modelNave, navalgobattle.model.naves.TipoNave tipo){
+				navalgobattle.controller.Nave controllerNave = new navalgobattle.controller.Nave(modelNave, that.gameLoop, that.squareWidth(), that.squareHeight(), tipo);
+			}
+		});
+
+		//agregar disparo
+	}
+
+	public void agregarNavesRandom(){
+		this.juego.agregarNavesRandom();
 	}
 
 	/** Devuelve los puntos.
@@ -72,34 +81,6 @@ public class Juego {
 	/** Devulve el turno */
 	public int getTurno(){
 		return this.juego.getTurno();
-	}
-
-	/** Agrega las naves del juego en posiciones random.
-	 * TODO: falta implementar que cree todas las naves levantando la cantidad y tipo desde Config.
-	 */
-	public void agregarNavesRandom(){
-		Hashtable<Constructor, Integer> navesDefault = (Hashtable<Constructor, Integer>) Config.getObject("navesDefault");
-		Enumeration<Constructor> e = navesDefault.keys();
-
-		while(e.hasMoreElements()){
-			Constructor cons = e.nextElement();
-			int number = navesDefault.get(cons);
-			while((number--)>0)
-				this.agregarNaveRandom(cons);
-		}
-	}
-
-	protected void agregarNaveRandom(Constructor cons){
-		try {
-			Posicion randomPos = this.randomPosicion();
-			int randomDir = this.randomDireccion();
-			navalgobattle.model.Nave modelNave = (navalgobattle.model.Nave) cons.newInstance(this.juego.getMaximaPosicion(), randomPos, randomDir);
-			navalgobattle.controller.Nave controllerNave = new navalgobattle.controller.Nave(modelNave, this.gameLoop, this.squareWidth(), this.squareHeight());
-			this.juego.addNave(modelNave);
-		}catch(Exception e){
-			Logger.log(LogLevel.WARN, "Error agregando nave. Se vuelve a intentar.");
-			this.agregarNaveRandom(cons);
-		}
 	}
 
 	/** Devuelve el ancho en pixel de un cuadrado (una posicion).
@@ -191,29 +172,7 @@ public class Juego {
 			this.eventJuegoSiguienteTurno.siguienteTurno();
 	}
 
-	/** Devuelve una posicion random.
-	 * Tiene en cuenta los limites de maxPos
-	 * TODO: esto se podria pasar a alguna parte del model
-	 * @return Posicion;
-	 */
-	protected Posicion randomPosicion(){
-		int x = (int) Math.round(Math.random() * this.juego.getMaximaPosicion().getX());
-		int y = (int) Math.round(Math.random() * this.juego.getMaximaPosicion().getY());
 
-		return new Posicion(x, y);
-	}
-
-	/** Devuelve una direccion Random.
-	 * TODO: esto se podria pasar a alguna parte del model
-	 */
-	protected int randomDireccion(){
-		//TODO: hacerlo mas lindo
-		int dir = (int) Math.round(Math.random() * 15);//La posicion maxima es 1111 -> 15
-		//TODO: Habria que poner la direccion como un enum o algo y dejar de hacer estas cosas sucias
-		if ((dir & 1) == 0 && (dir & 4) == 0 )
-			return this.randomDireccion();
-		return dir;
-	}
 	/** Setea el evento de juego terminado
 	 * @param EventJuegoTerminado eventJuegoTerminado: evento
 	 */

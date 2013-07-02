@@ -9,6 +9,7 @@ import navalgobattle.model.ParteNave;
 import navalgobattle.model.Disparo;
 import navalgobattle.model.exceptions.ExceptionNave;
 import navalgobattle.model.exceptions.PosicionInvalida;
+import navalgobattle.model.naves.TipoNave;
 /**
  * Nave.
  * 
@@ -153,5 +154,11 @@ public class Nave {
 					parte.setVida(vida);
 			}
 		}
+	}
+
+	/** Devuelve el tipo de la nave
+	 */
+	public TipoNave getTipo(){
+		return TipoNave.NONE;
 	}
 }

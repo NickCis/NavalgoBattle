@@ -19,4 +19,8 @@ public class PortaAviones extends Nave{
 	protected int size(){
 		return 5;
 	}
+
+	public TipoNave getTipo(){
+		return TipoNave.PORTAAVIONES;
+	}
 }

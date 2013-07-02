@@ -25,6 +25,7 @@ public class Nave implements ObjetoVivo{
 	protected Posicion posicion;
 	protected int ladoX;
 	protected int ladoY;
+	protected navalgobattle.model.naves.TipoNave tipo;
 
 	/** Constructor.
 	 * @param navalgobattle.model.Nave nave: Nave del modelo el cual es representada por esta nave del controller.
@@ -32,11 +33,12 @@ public class Nave implements ObjetoVivo{
 	 * @param int ladoX: ancho en pixeles de la posicion (un cuadrado).
 	 * @param int ladoY: alto en pixeles de la posicion (un cuadrado).
 	 */
-	public Nave(navalgobattle.model.Nave nave, GameLoop gameLoop, int ladoX, int ladoY) {
+	public Nave(navalgobattle.model.Nave nave, GameLoop gameLoop, int ladoX, int ladoY, navalgobattle.model.naves.TipoNave tipo) {
 		this.nave = nave;
 		this.gameLoop = gameLoop;
 		this.ladoX = ladoX;
 		this.ladoY = ladoY;
+		this.tipo = tipo;
 		this.agregarEnJuego();
 	}
 
@@ -46,6 +48,29 @@ public class Nave implements ObjetoVivo{
 	protected void agregarEnJuego(){
 		int numeroNave = 0;
 		final Nave controllerNave = this;
+		// FIXME: esto se tendria qe hacer de una manera mas linda
+		Color miColor = Color.GREEN;
+		switch(this.tipo){
+			case NONE:
+				miColor = Color.GREEN;
+				break;
+			case LANCHA:
+				miColor = Color.BLUE;
+				break;
+			case DESTRUCTOR:
+				miColor = Color.RED;
+				break;
+			case PORTAAVIONES:
+				miColor = Color.YELLOW;
+				break;
+			case ROMPEHIELOS:
+				miColor = Color.CYAN;
+				break;
+			case BUQUE:
+				miColor = Color.WHITE;
+				break;
+		}
+		final Color color = miColor;
 		for(Posicion pos: this.nave.getPosiciones()){
 			final Integer estaNave = new Integer(numeroNave++);
 			//XXX: Aca se agregan todos los cuadraditos usando clases Anonimas, se podria hacer de una manera mas linda. Ademas se hardcodea el color.
@@ -58,7 +83,7 @@ public class Nave implements ObjetoVivo{
 				}
 			}){
 				public Color getColor(){
-					return Color.GREEN;
+					return color;
 				}
 			});
 		}

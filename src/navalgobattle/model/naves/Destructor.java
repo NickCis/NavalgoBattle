@@ -29,4 +29,8 @@ public class Destructor extends Nave{
 	public void danar(Convencional disparo, Posicion posicion){
 		super.danar(disparo, posicion);
 	}
+
+	public TipoNave getTipo(){
+		return TipoNave.DESTRUCTOR;
+	}
 }

@@ -19,4 +19,8 @@ public class Lancha extends Nave {
 	protected int size(){
 		return 2;
 	}
+
+	public TipoNave getTipo(){
+		return TipoNave.LANCHA;
+	}
 }

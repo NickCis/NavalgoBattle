@@ -4,6 +4,10 @@ package navalgobattle.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import java.util.Hashtable;
+import java.util.Enumeration;
+import java.lang.reflect.Constructor;
+
 // Packages nuestros
 import navalgobattle.model.Disparo;
 import navalgobattle.model.Posicion;
@@ -12,8 +16,12 @@ import navalgobattle.model.disparos.Mina;
 import navalgobattle.model.Nave;
 import navalgobattle.model.Jugador;
 
+import navalgobattle.model.event.EventAgregarNave;
+
 import navalgobattle.util.logger.Logger;
 import navalgobattle.util.logger.LogLevel;
+
+import navalgobattle.util.config.Config;
 /**
  * Clase principal del juego.
  * 
@@ -30,6 +38,7 @@ public class NavalgoBattle {
 	protected ArrayList<Nave> navesList;
 	protected ArrayList<Mina> minasList;
 	protected ArrayList<Convencional> convencionalList;
+	protected EventAgregarNave eventAgregarNave = null;
 
 	protected NavalgoBattle(){
 		this.navesList = new ArrayList<Nave>();
@@ -122,6 +131,8 @@ public class NavalgoBattle {
 	 */
 	public void addNave(Nave nave){
 		this.navesList.add(nave);
+		if(this.eventAgregarNave != null)
+			this.eventAgregarNave.agregarNave(nave, nave.getTipo());
 	}
 
 	/** Metodo que se llama para pasar de turno.
@@ -158,6 +169,64 @@ public class NavalgoBattle {
 			if(c.disparar())
 				it.remove();
 		}
+	}
+
+	/** Agrega las naves del juego en posiciones random.
+	 * TODO: falta implementar que cree todas las naves levantando la cantidad y tipo desde Config.
+	 */
+	public void agregarNavesRandom(){
+		Hashtable<Constructor, Integer> navesDefault = (Hashtable<Constructor, Integer>) Config.getObject("navesDefault");
+		Enumeration<Constructor> e = navesDefault.keys();
+
+		while(e.hasMoreElements()){
+			Constructor cons = e.nextElement();
+			int number = navesDefault.get(cons);
+			while((number--)>0)
+				this.agregarNaveRandom(cons);
+		}
+	}
+
+	protected void agregarNaveRandom(Constructor cons){
+		try {
+			Posicion randomPos = this.randomPosicion();
+			int randomDir = this.randomDireccion();
+			Nave modelNave = (Nave) cons.newInstance(this.getMaximaPosicion(), randomPos, randomDir);
+			this.addNave(modelNave);
+		}catch(Exception e){
+			Logger.log(LogLevel.WARN, "Error agregando nave. Se vuelve a intentar.");
+			this.agregarNaveRandom(cons);
+		}
+	}
+
+	/** Devuelve una posicion random.
+	 * Tiene en cuenta los limites de maxPos
+	 * TODO: esto se podria pasar a alguna parte del model
+	 * @return Posicion;
+	 */
+	protected Posicion randomPosicion(){
+		int x = (int) Math.round(Math.random() * this.getMaximaPosicion().getX());
+		int y = (int) Math.round(Math.random() * this.getMaximaPosicion().getY());
+
+		return new Posicion(x, y);
+	}
+
+	/** Devuelve una direccion Random.
+	 * TODO: esto se podria pasar a alguna parte del model
+	 */
+	protected int randomDireccion(){
+		//TODO: hacerlo mas lindo
+		int dir = (int) Math.round(Math.random() * 15);//La posicion maxima es 1111 -> 15
+		//TODO: Habria que poner la direccion como un enum o algo y dejar de hacer estas cosas sucias
+		if ((dir & 1) == 0 && (dir & 4) == 0 )
+			return this.randomDireccion();
+		return dir;
+	}
+
+	/** Setea el evento de Agregar nave
+	 * @param EventAgregarNave eventJuegoTerminado: evento
+	 */
+	public void addAgregarNaveListener(EventAgregarNave event){
+		this.eventAgregarNave = event;
 	}
 
 }
