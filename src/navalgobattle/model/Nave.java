@@ -7,6 +7,7 @@ import navalgobattle.model.NavalgoBattle;
 import navalgobattle.model.Posicion;
 import navalgobattle.model.ParteNave;
 import navalgobattle.model.Disparo;
+import navalgobattle.model.disparos.Convencional;
 import navalgobattle.model.exceptions.ExceptionNave;
 import navalgobattle.model.exceptions.PosicionInvalida;
 import navalgobattle.model.naves.TipoNave;
@@ -141,7 +142,7 @@ public class Nave {
 	/** Danar a una nave.
 	 * @param Disparo disparo, instancia de disparo que quiere danar a la nave.
 	 */
-	public void danar(Disparo disparo, Posicion posicion){
+	protected void _danar(Disparo disparo, Posicion posicion){
 		Iterator<ParteNave> it = this.partes.iterator();
 		while (it.hasNext()){
 			ParteNave parte = it.next();
@@ -154,6 +155,13 @@ public class Nave {
 					parte.setVida(vida);
 			}
 		}
+	}
+
+	public void danar(Disparo disparo, Posicion posicion){
+		this._danar(disparo, posicion);
+	}
+	public void danar(Convencional disparo, Posicion posicion){
+		this._danar(disparo, posicion);
 	}
 
 	/** Devuelve el tipo de la nave

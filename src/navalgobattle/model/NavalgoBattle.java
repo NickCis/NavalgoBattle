@@ -70,9 +70,15 @@ public class NavalgoBattle {
 		return (this.getPuntos() <= 0 || this.navesList.size() == 0);
 	}
 
-	public ArrayList<Nave> getNaves(){
-		return this.navesList;
+	/** Gano el juego?.
+	 * La razon por que termino si se acabaron los puntos o mataron las naves se puede decidir obteniendo la lista de naves y puntos
+	 * Pre condicion: el juego debio terminar
+	 * @return boolean: devuelve true si el juego lo gano.
+	 */
+	public boolean ganoJuego(){
+		return (this.navesList.size() == 0);
 	}
+
 
 	public int getTurno(){
 		return this.turno;
@@ -157,16 +163,16 @@ public class NavalgoBattle {
 	 * Debe guardar el disparo en la lista correspondiente, restarle puntos al jugador.
 	 * @param Disparo disparo: disparo a realizarse
 	 */
-	public void disparar(Disparo disparo){
+	private void disparar(Disparo disparo){
 		Logger.log(LogLevel.DEBUG, "Costo de disparo: "+disparo.getCosto());
 		this.jugador.addPuntos(- (disparo.getCosto() ) );
 	}
-	public void disparar(Convencional disparo){
+	private void disparar(Convencional disparo){
 		Logger.log(LogLevel.DEBUG, "Se agrega un convencional");
 		this.disparar( (Disparo) disparo);
 		this.convencionalList.add(disparo);
 	}
-	public void disparar(Mina disparo){
+	private void disparar(Mina disparo){
 		Logger.log(LogLevel.DEBUG, "Se agrega una mina");
 		this.disparar( (Disparo) disparo);
 		this.minasList.add(disparo);
@@ -270,7 +276,7 @@ public class NavalgoBattle {
 	}
 
 	/** Setea el evento de Agregar nave
-	 * @param EventAgregarNave eventJuegoTerminado: evento
+	 * @param EventAgregarNave event: evento
 	 */
 	public void addAgregarNaveListener(EventAgregarNave event){
 		this.eventAgregarNave = event;

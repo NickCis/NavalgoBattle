@@ -1,7 +1,6 @@
 package navalgobattle.controller;
 
 import java.util.ArrayList;
-import java.lang.Math;
 
 import fiuba.algo3.titiritero.modelo.ObjetoPosicionable;
 
@@ -25,6 +24,7 @@ import fiuba.algo3.titiritero.modelo.GameLoop;
 //import navalgobattle.controller.Disparo;
 
 
+import navalgobattle.controller.CalculadoraDePixeles;
 import navalgobattle.controller.event.EventJuegoTerminado;
 import navalgobattle.controller.event.EventJuegoSiguienteTurno;
 
@@ -41,6 +41,7 @@ import navalgobattle.model.event.EventAgregarNave;
  */
 public class Juego {
 	protected NavalgoBattle juego;
+	protected CalculadoraDePixeles calc;
 	protected int width;
 	protected int height;
 	protected GameLoop gameLoop;
@@ -58,15 +59,14 @@ public class Juego {
 		this.gameLoop = gameLoop;
 		//TODO: Sacar jugador de aca, tiene qe levantarlo de algun lado.
 		this.juego = new NavalgoBattle(new Posicion((Posicion) Config.getObject("maxPos")), new Jugador((Integer) Config.getObject("puntosPorDefecto")));
-
+		this.calc = new CalculadoraDePixeles(this.juego, this.width, this.height);
 		final Juego that = this;
+		final CalculadoraDePixeles calc = this.calc;
 		this.juego.addAgregarNaveListener(new EventAgregarNave(){
 			public void agregarNave(navalgobattle.model.Nave modelNave, navalgobattle.model.naves.TipoNave tipo){
-				navalgobattle.controller.Nave controllerNave = new navalgobattle.controller.Nave(modelNave, that.gameLoop, that.squareWidth(), that.squareHeight(), tipo);
+				navalgobattle.controller.Nave controllerNave = new navalgobattle.controller.Nave(modelNave, that.gameLoop, calc.squareWidth(), calc.squareHeight(), tipo);
 			}
 		});
-
-		//agregar disparo
 	}
 
 	public void agregarNavesRandom(){
@@ -84,56 +84,23 @@ public class Juego {
 		return this.juego.getTurno();
 	}
 
-	/** Devuelve el ancho en pixel de un cuadrado (una posicion).
-	 */
-	protected int squareWidth(){
-		return (int) Math.round(this.width / (this.juego.getMaximaPosicion().getX()+1));
-	}
-	/** Devuelve el alto en pixel de un cuadrado (una posicion).
-	 */
-	protected int squareHeight(){
-		return (int) Math.round(this.height / (this.juego.getMaximaPosicion().getY()+1));
-	}
-	/** Convierte pixeles del eje x en posiciones.
-	 */
-	protected int x2pos(int x){
-		return (int) Math.round(x * (this.juego.getMaximaPosicion().getX()+1)/ this.width);
-	}
-	/** Convierte posiciones en pixeles del eje x (devuelve el pixel en el medio del cuadrado).
-	 */
-	protected int pos2x(int xPos){
-		return (int) Math.round(xPos * this.width / (this.juego.getMaximaPosicion().getX()+1) +  this.squareWidth()/2);
-	}
-
-	/** Convierte pixeles del eje y en posiciones.
-	 */
-	protected int y2pos(int y){
-		return (int) Math.round(y * (this.juego.getMaximaPosicion().getY()+1)/ this.height);
-	}
-
-	/** Convierte posiciones en pixeles del eje y (devuelve el pixel en el medio del cuadrado).
-	 */
-	protected int pos2y(int yPos){
-		return (int) Math.round(yPos * this.height/ (this.juego.getMaximaPosicion().getY()+1)+this.squareHeight()/2);
-	}
-
 	/** Metodo que llama el view al efectuar un disparo.
 	 * @param TipoDisparo disparo: tipo del disparo que se efectuo, es un enum.
 	 * @param int x: coordenada en pixeles x del panel donde se realizo el disparo.
 	 * @param int y: coordenada en pixeles y del panel donde se realizo el disparo.
 	 */
 	public void disparar(TipoDisparo disparo, int x, int y){
-		Posicion posicion = new Posicion(this.x2pos(x), this.y2pos(y));
+		Posicion posicion = new Posicion(this.calc.x2pos(x), this.calc.y2pos(y));
 		Logger.log(LogLevel.INFO, disparo+" x:"+posicion.getX()+" y:"+posicion.getY());
 		navalgobattle.model.Disparo modelDisparo = this.juego.doDisparar(disparo, posicion);
-		navalgobattle.controller.Disparo controllerDisparo = new navalgobattle.controller.Disparo(modelDisparo, this.gameLoop, this.squareWidth(), this.squareHeight(), disparo);
+		navalgobattle.controller.Disparo controllerDisparo = new navalgobattle.controller.Disparo(modelDisparo, this.gameLoop, this.calc.squareWidth(), this.calc.squareHeight(), disparo);
 
 		try { 
 			this.juego.siguienteTurno();
 		}catch(Exception e){ Logger.log(LogLevel.ERROR, "exception");} //TODO: Fijarse que hacer con la exceptcion
 
 		if(this.juego.terminoJuego() && this.eventJuegoTerminado != null)
-			this.eventJuegoTerminado.juegoTermino(this.juego.getNaves().size() == 0, this.juego.getPuntos());
+			this.eventJuegoTerminado.juegoTermino(this.juego.ganoJuego(), this.juego.getPuntos());
 
 		if(this.eventJuegoSiguienteTurno != null)
 			this.eventJuegoSiguienteTurno.siguienteTurno();

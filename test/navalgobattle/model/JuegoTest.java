@@ -15,89 +15,91 @@ import navalgobattle.model.Jugador;
 import navalgobattle.model.Nave;
 import navalgobattle.model.naves.Lancha;
 import navalgobattle.util.logger.Logger;
+import navalgobattle.util.logger.LogLevel;
+import navalgobattle.model.disparos.TipoDisparo;
 
 public class JuegoTest extends TestCase{
-        NavalgoBattle juego;
-        Posicion pos;
-        Jugador jugador;
+	NavalgoBattle juego;
+	Posicion pos;
+	Jugador jugador;
 	@Before
 	public void setUp(){
-                this.jugador = new Jugador();
-                this.pos = new Posicion(10,10);
-                this.juego = new NavalgoBattle();
-                this.juego.setJugador(jugador);
+		this.jugador = new Jugador();
+		this.pos = new Posicion(10,10);
+		this.juego = new NavalgoBattle();
+		this.juego.setJugador(jugador);
 
 		Logger.initialice();
 	}
-        
-        public void testTerminoJuego() throws Exception {
+
+	public void testTerminoJuego() throws Exception {
 		Jugador jug = new Jugador();
-                juego.addNave(new Nave(pos,pos,1));
-                juego.setJugador(jug);
-                                                         
-		this.assertEquals(juego.terminoJuego(), true);                
-                jug.addPuntos(1);                
-                this.assertEquals(juego.terminoJuego(), false);                                              
-                juego.siguienteTurno(); 
-                this.assertEquals(juego.terminoJuego(), true);
+		juego.addNave(new Nave(pos,pos,1));
+		juego.setJugador(jug);
 
-                
+		this.assertEquals(juego.terminoJuego(), true);
+		jug.addPuntos(1);
+		this.assertEquals(juego.terminoJuego(), false);
+		juego.siguienteTurno(); 
+		this.assertEquals(juego.terminoJuego(), true);
+
+
 	}
-        public void testMatarNaveConConvensional()  throws Exception{
-        //se matan en el mismo turno para hacer el test
-               Lancha nave = new Lancha(pos,new Posicion(2,2),1);
-               juego.addNave(nave);
-               ArrayList<Posicion> posiciones = nave.getPosiciones();
-               juego.disparar(new Convencional(juego,posiciones.get(0)));
-               juego.disparar(new Convencional(juego,posiciones.get(1)));
-               juego.siguienteTurno();
-               this.assertEquals(nave.estaViva(), false);
-        }
-        public void testMatarNaveConMinaContacto()  throws Exception{
-        //se matan en el mismo turno para hacer el test
-               Lancha nave = new Lancha(pos,new Posicion(2,2),1);
-               juego.addNave(nave);
-               ArrayList<Posicion> posiciones = nave.getPosiciones();
-               juego.disparar(new MinaContacto(juego,posiciones.get(0).getSiguiente(1)));
-               juego.disparar(new MinaContacto(juego,posiciones.get(1).getSiguiente(1)));
-               juego.siguienteTurno();
-               this.assertEquals(nave.estaViva(), false);
-               this.assertEquals(juego.terminoJuego(), true);
-        }
-        public void testMatarNaveConMinaRetardada()  throws Exception{
-        //se matan en el mismo turno para hacer el test
-               Lancha nave = new Lancha(pos,new Posicion(2,2),1);
-               juego.setMaximaPosicion(pos);
-               juego.addNave(nave);
-               ArrayList<Posicion> posiciones = nave.getPosiciones();
-              
-               MinaRetardada mina1 = new MinaRetardada(juego,posiciones.get(1));
-               mina1.setRadio(2);
-               mina1.setRetardo(1);
+	public void testMatarNaveConConvensional()  throws Exception{
+		//se matan en el mismo turno para hacer el test
+		Lancha nave = new Lancha(pos,new Posicion(2,2),1);
+		juego.addNave(nave);
+		ArrayList<Posicion> posiciones = nave.getPosiciones();
 
-               juego.disparar(mina1);
+		juego.doDisparar(TipoDisparo.CONVENCIONAL, posiciones.get(0));
+		juego.doDisparar(TipoDisparo.CONVENCIONAL, posiciones.get(1));
+		juego.siguienteTurno();
+		this.assertEquals(nave.estaViva(), false);
+	}
+	public void testMatarNaveConMinaContacto()  throws Exception{
+		//se matan en el mismo turno para hacer el test
+		Lancha nave = new Lancha(pos,new Posicion(2,2),1);
+		juego.addNave(nave);
+		ArrayList<Posicion> posiciones = nave.getPosiciones();
 
-               juego.siguienteTurno();
-               juego.siguienteTurno();
-              
-               this.assertEquals(nave.estaViva(), false);
-               this.assertEquals(juego.getNaves().size(), 0);
-        }
-        public void testPuntosDuranteElJuego()  throws Exception{
-          NavalgoBattle juego = new NavalgoBattle(pos,jugador);  
-          jugador.addPuntos(10000);
-          juego.setPuntosPorTurno(10);
-          Convencional disparo1 = new Convencional(juego,pos);
-          disparo1.setCosto(200);
-          juego.disparar(disparo1);
-          juego.siguienteTurno();
-          MinaContacto disparo2 = new MinaContacto(juego,pos);
-          disparo2.setCosto(100);
-          juego.disparar(disparo2);
-          juego.siguienteTurno();
-          
-          this.assertEquals(juego.getTurno(),2 );
-          this.assertEquals(jugador.getPuntos(),9680 );
-        }
-        
+		juego.doDisparar(TipoDisparo.MINA_CONTACTO, posiciones.get(0).getSiguiente(1));
+		juego.doDisparar(TipoDisparo.MINA_CONTACTO, posiciones.get(1).getSiguiente(1));
+		juego.siguienteTurno();
+		this.assertEquals(nave.estaViva(), false);
+		this.assertEquals(juego.terminoJuego(), true);
+	}
+	public void testMatarNaveConMinaRetardada()  throws Exception{
+		//se matan en el mismo turno para hacer el test
+		Lancha nave = new Lancha(pos,new Posicion(2,2),1);
+		juego.setMaximaPosicion(pos);
+		juego.addNave(nave);
+		ArrayList<Posicion> posiciones = nave.getPosiciones();
+		
+		juego.doDisparar(TipoDisparo.MINA_TRIPLE, new Posicion(5, 2));
+
+		juego.siguienteTurno();
+		Posicion pos = nave.getPosiciones().get(0);
+		juego.siguienteTurno();
+		juego.siguienteTurno();
+		juego.siguienteTurno();
+
+		this.assertEquals(nave.estaViva(), false);
+	}
+	public void testPuntosDuranteElJuego()  throws Exception{
+		NavalgoBattle juego = new NavalgoBattle(pos,jugador);
+		jugador.addPuntos(10000);
+		juego.setPuntosPorTurno(10);
+		//10000
+		juego.doDisparar(TipoDisparo.CONVENCIONAL, pos);
+		//9800
+		juego.siguienteTurno();
+		//9790
+		juego.doDisparar(TipoDisparo.MINA_CONTACTO, pos);
+		//9640
+		juego.siguienteTurno();
+		//9630
+
+		this.assertEquals(juego.getTurno(),2 );
+		this.assertEquals(jugador.getPuntos(),9630 );
+	}
 }

@@ -25,11 +25,11 @@ public class Main {
 		Config.setObject("maxPos", new Posicion(10, 10));
 		Config.setObject("puntosPorDefecto", new Integer(10000));
 		Hashtable<Constructor, Integer> navesConfig = new Hashtable<Constructor, Integer>();
-		navesConfig.put(navalgobattle.model.naves.Lancha.class.getDeclaredConstructor(Posicion.class, Posicion.class, int.class), 2);
+		//navesConfig.put(navalgobattle.model.naves.Lancha.class.getDeclaredConstructor(Posicion.class, Posicion.class, int.class), 2);
 		navesConfig.put(navalgobattle.model.naves.Destructor.class.getDeclaredConstructor(Posicion.class, Posicion.class, int.class), 2);
-		navesConfig.put(navalgobattle.model.naves.Buque.class.getDeclaredConstructor(Posicion.class, Posicion.class, int.class), 1);
-		navesConfig.put(navalgobattle.model.naves.PortaAviones.class.getDeclaredConstructor(Posicion.class, Posicion.class, int.class), 1);
-		navesConfig.put(navalgobattle.model.naves.RompeHielos.class.getDeclaredConstructor(Posicion.class, Posicion.class, int.class), 1);
+		//navesConfig.put(navalgobattle.model.naves.Buque.class.getDeclaredConstructor(Posicion.class, Posicion.class, int.class), 1);
+		//navesConfig.put(navalgobattle.model.naves.PortaAviones.class.getDeclaredConstructor(Posicion.class, Posicion.class, int.class), 1);
+		//navesConfig.put(navalgobattle.model.naves.RompeHielos.class.getDeclaredConstructor(Posicion.class, Posicion.class, int.class), 1);
 		Config.setObject("navesDefault", navesConfig);
 
 		//=======

@@ -44,6 +44,7 @@ public class VentanaPrincipal extends Ventana{
 		btnIniciar.setBounds(42, 16, 77, 25);
 		this.frame.getContentPane().add(btnIniciar);
 		
+		/*
 		JButton btnDetener = new JButton("Otra cosa");
 		btnDetener.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -52,7 +53,7 @@ public class VentanaPrincipal extends Ventana{
 		btnDetener.setBounds(325, 16, 92, 25);
 		this.frame.getContentPane().add(btnDetener);
 
-		btnDetener.setFocusable(false);
+		btnDetener.setFocusable(false);*/
 		btnIniciar.setFocusable(false);
 
 		this.frame.addKeyListener(new KeyListener() {

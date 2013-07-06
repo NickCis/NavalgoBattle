@@ -31,7 +31,7 @@ public class MinaRetardada extends Mina {
 	 * 
 	 */
 	public boolean disparar() throws ExceptionDisparo{
-		//Logger.log(LogLevel.DEBUG, "Mina Retardad["+this.getPosicion().getX()+","+this.getPosicion().getY()+"]: turnos restantes: " + retardo);
+		Logger.log(LogLevel.DEBUG, "Mina Retardad["+this.getPosicion().getX()+","+this.getPosicion().getY()+"]: turnos restantes: " + retardo);
 		if (this.retardo-- <= 0){
 			ArrayList<Posicion> posiciones = radioPosicion(posicion, this.radio);
 			ArrayList<Nave> naves;
@@ -46,7 +46,7 @@ public class MinaRetardada extends Mina {
 				}
 			}
 				
-		//Logger.log(LogLevel.DEBUG, "-->Mina Retardad: BUM! retardo: " + retardo);
+		Logger.log(LogLevel.DEBUG, "-->Mina Retardad: BUM! retardo: " + retardo);
 		this.disparo = true;
 		return true;
 		}

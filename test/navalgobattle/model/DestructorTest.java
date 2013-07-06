@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
+import navalgobattle.model.NavalgoBattle;
 import navalgobattle.model.naves.Destructor;
 import navalgobattle.model.exceptions.ExceptionNave;
 import navalgobattle.model.exceptions.PosicionInvalida;
@@ -14,11 +15,13 @@ import navalgobattle.model.Disparo;
 import navalgobattle.model.disparos.Convencional;
 
 import navalgobattle.util.logger.Logger;
+import navalgobattle.util.logger.LogLevel;
 
 public class DestructorTest extends TestCase{
 	@Before
 	public void setUp(){
 		Logger.initialice();
+		Logger.setLogLevel(LogLevel.DEBUG);
 	}
 
 	@Test
@@ -100,9 +103,10 @@ public class DestructorTest extends TestCase{
 	public void testMatarNave() throws Exception{
 		Destructor nave = new Destructor(new Posicion(5, 5), new Posicion(0, 0), 1);
 
-		nave.danar((Convencional) null, new Posicion(0, 0));
-		nave.danar((Convencional) null, new Posicion(1, 0));
-		nave.danar((Convencional) null, new Posicion(2, 0));
+		Convencional conv = new Convencional((NavalgoBattle) null, (Posicion) null);
+		nave.danar(conv, new Posicion(0, 0));
+		nave.danar(conv, new Posicion(1, 0));
+		nave.danar(conv, new Posicion(2, 0));
 		this.assertEquals(false, nave.estaViva());
 	}
 

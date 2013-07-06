@@ -11,53 +11,58 @@ Generalidades
 Modelo
   ¿Está completo?¿Contempla la totalidad del problema?
     SI
-    (-) Botones sin funcionalidad ('Otra cosa')
+    (-) Botones sin funcionalidad ('Otra cosa'). Listo
   ¿Respeta encapsulamiento?
     SI
-    (-) Se devuelven referencias a atributos privados de los objetos (ej: NavalgoBattle.getNaves())
-    (-) Controlador Juego hace el cálculo de coordenadas del modelo a pixels. Deberían extraer esa responsabilidad ya que no es algo que de lo contrario viola el principio de Única Responsabilidad.
+    (-) Se devuelven referencias a atributos privados de los objetos (ej: NavalgoBattle.getNaves()). Listo
+    (-) Controlador Juego hace el cálculo de coordenadas del modelo a pixels. Deberían extraer esa responsabilidad ya que no es algo que de lo contrario viola el principio de Única Responsabilidad. --  Se creo la clase CalculadoraDePixeles, Juego delega los calculos a ella
   ¿Hace un buen uso de excepciones?
     SI
   ¿Utiliza polimorfismo en las situaciones esperadas?
     NO
-    (-) Al recibir disparo las naves preguntan cuál es la clase del disparo recibido (ej: Destructor.danar(Disparo disparo, Posicion posicion))
+    (-) Al recibir disparo las naves preguntan cuál es la clase del disparo recibido (ej: Destructor.danar(Disparo disparo, Posicion posicion)) -- Arreglado
 
 Diagramas
 ---------
 Diagrama de clases
-  ¿Está completo?
-    NO
-    (-) Faltan clases de vista y controlador
-    (-) Faltan también clases del modelo (ej: Posicion, ParteNave)
-    (-) No está actualizado con el código
-  ¿Está bien utilizada la notación?
-    SI
+¿Está completo?
+NO
+(-) Faltan clases de vista y controlador
+(-) Faltan también clases del modelo (ej: Posicion, ParteNave)
+(-) No está actualizado con el código
+¿Está bien utilizada la notación?
+SI
 Diagramas de secuencia
-  ¿Está completo?
-    SI
-  ¿Es consistente con el diagrama de clases?
-    NO
-    (-) Incluye objetos y métodos inexistentes
-    (-) Incluye objetos y métodos inexistentes
-  ¿Está bien utilizada la notación?
-    SI
-Diagrama de estados
-  ¿Está completo?
-    NO
-    (-) No presentan diagrama en informe
-  ¿Está bien utilizada la notación?
+¿Está completo?
+SI
+¿Es consistente con el diagrama de clases?
+NO
+(-) Incluye objetos y métodos inexistentes
+(-) Incluye objetos y métodos inexistentes
+¿Está bien utilizada la notación?
+SI
+Diagrama de estados --- No se pide
+¿Está completo?
+NO
+(-) No presentan diagrama en informe
+¿Está bien utilizada la notación?
 
 Código
 ------
 Generalidades
-  ¿Respeta estándares de codificación?
-    SI
-    (-) Qué diferencia hay entre métodos disparar y doDisparar de clase NavalgoBattle?
+¿Respeta estándares de codificación?
+SI
+(-) Qué diferencia hay entre métodos disparar y doDisparar de clase NavalgoBattle? -- disparar es protegida, doDisparo es la api
     (-) No deberían dejar TODOs en los comentarios en una entrega final...
-    (-) Archivo vacío - Controller.java (?)
+    (-) Archivo vacío - Controller.java (?) . Borrado
   ¿Está correctamente documentado?
     SI
     (-) Nombres de tests deberían ser más explicativos de que es lo que se está probando
     * Nota: Cuándo usan más de una clase real del modelo en un tests, deberían separarlo como tests de integración. En tests unitarios es preferible utilizar 'mocks' para las dependencias. No hace falta que lo corrijan esto, es solamente un comentario para que lo tengan en cuenta.
 
 NOTA: Insuficiente
+
+
+Falta:
+Arreglar todo lo del informe y cambiar nombre de los tests
+
