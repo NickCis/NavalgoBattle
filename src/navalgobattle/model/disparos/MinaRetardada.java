@@ -69,7 +69,7 @@ public class MinaRetardada extends Mina {
 	 * @param Posicion posicion: posicion de la mina y a partir de la cual se calcula las posiciones a un radio de distancia
 	 * @return ArrayList<Posicion> posiciones a  un radio de distancia .
 	 */
-	public ArrayList<Posicion> radioPosicion(Posicion posicion, int radio){
+	protected ArrayList<Posicion> radioPosicion(Posicion posicion, int radio){
 		ArrayList<Posicion> posiciones = new ArrayList<Posicion>();
 		if(radio == 1)
 			posiciones = posicionesRadioUno(posicion);	

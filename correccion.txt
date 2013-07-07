@@ -28,7 +28,7 @@ Diagrama de clases
 ¿Está completo?
 NO
 (-) Faltan clases de vista y controlador
-(-) Faltan también clases del modelo (ej: Posicion, ParteNave)
+(-) Faltan también clases del modelo (ej: Posicion, ParteNave). Arreglado
 (-) No está actualizado con el código
 ¿Está bien utilizada la notación?
 SI
