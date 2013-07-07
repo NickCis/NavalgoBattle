@@ -3,10 +3,10 @@ package navalgobattle.model;
 // Packages del sistema
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.lang.reflect.Constructor;
 
 import java.util.Hashtable;
 import java.util.Enumeration;
-import java.lang.reflect.Constructor;
 
 // Packages nuestros
 import navalgobattle.model.Disparo;
@@ -17,6 +17,7 @@ import navalgobattle.model.disparos.MinaRetardada;
 import navalgobattle.model.disparos.MinaContacto;
 import navalgobattle.model.disparos.TipoDisparo;
 import navalgobattle.model.Nave;
+import navalgobattle.model.naves.TipoNave;
 import navalgobattle.model.Jugador;
 
 import navalgobattle.model.event.EventAgregarNave;
@@ -228,14 +229,39 @@ public class NavalgoBattle {
 	 * TODO: falta implementar que cree todas las naves levantando la cantidad y tipo desde Config.
 	 */
 	public void agregarNavesRandom(){
-		Hashtable<Constructor, Integer> navesDefault = (Hashtable<Constructor, Integer>) Config.getObject("navesDefault");
-		Enumeration<Constructor> e = navesDefault.keys();
+		Hashtable<TipoNave, Integer> navesDefault = (Hashtable<TipoNave, Integer>) Config.getObject("navesDefault");
+		Enumeration<TipoNave> e = navesDefault.keys();
 
 		while(e.hasMoreElements()){
-			Constructor cons = e.nextElement();
-			int number = navesDefault.get(cons);
-			while((number--)>0)
-				this.agregarNaveRandom(cons);
+			TipoNave tipo = e.nextElement();
+			int number = navesDefault.get(tipo);
+			while((number--)>0){
+				Constructor cons = null;
+				try {
+					switch(tipo){
+						case LANCHA:
+							cons = navalgobattle.model.naves.Lancha.class.getDeclaredConstructor(Posicion.class, Posicion.class, int.class);
+							break;
+						case DESTRUCTOR:
+							cons = navalgobattle.model.naves.Destructor.class.getDeclaredConstructor(Posicion.class, Posicion.class, int.class);
+							break;
+						case PORTAAVIONES:
+							cons = navalgobattle.model.naves.PortaAviones.class.getDeclaredConstructor(Posicion.class, Posicion.class, int.class);
+							break;
+						case ROMPEHIELOS:
+							cons = navalgobattle.model.naves.RompeHielos.class.getDeclaredConstructor(Posicion.class, Posicion.class, int.class);
+							break;
+						case BUQUE:
+							cons = navalgobattle.model.naves.Buque.class.getDeclaredConstructor(Posicion.class, Posicion.class, int.class);
+							break;
+					}
+				}catch (Exception expt){
+					Logger.log(LogLevel.ERROR, "Excepcion obteniendo el constructor");
+				}
+
+				if(cons != null)
+					this.agregarNaveRandom(cons);
+			}
 		}
 	}
 
