@@ -57,7 +57,6 @@ public class Juego {
 		this.width = width;
 		this.height = height;
 		this.gameLoop = gameLoop;
-		//TODO: Sacar jugador de aca, tiene qe levantarlo de algun lado.
 		this.juego = new NavalgoBattle(new Posicion((Posicion) Config.getObject("maxPos")), new Jugador((Integer) Config.getObject("puntosPorDefecto")));
 		this.calc = new CalculadoraDePixeles(this.juego, this.width, this.height);
 		final Juego that = this;
@@ -97,7 +96,7 @@ public class Juego {
 
 		try { 
 			this.juego.siguienteTurno();
-		}catch(Exception e){ Logger.log(LogLevel.ERROR, "exception");} //TODO: Fijarse que hacer con la exceptcion
+		}catch(Exception e){ Logger.log(LogLevel.ERROR, "exception");} 
 
 		if(this.juego.terminoJuego() && this.eventJuegoTerminado != null)
 			this.eventJuegoTerminado.juegoTermino(this.juego.ganoJuego(), this.juego.getPuntos());

@@ -48,7 +48,6 @@ public class Nave implements ObjetoVivo{
 	protected void agregarEnJuego(){
 		int numeroNave = 0;
 		final Nave controllerNave = this;
-		// FIXME: esto se tendria qe hacer de una manera mas linda
 		Color miColor = Color.GREEN;
 		switch(this.tipo){
 			case NONE:
@@ -73,7 +72,6 @@ public class Nave implements ObjetoVivo{
 		final Color color = miColor;
 		for(Posicion pos: this.nave.getPosiciones()){
 			final Integer estaNave = new Integer(numeroNave++);
-			//XXX: Aca se agregan todos los cuadraditos usando clases Anonimas, se podria hacer de una manera mas linda. Ademas se hardcodea el color.
 			this.gameLoop.agregar(new Cuadrado(this.ladoX, this.ladoY, (ObjetoPosicionable) new ObjetoPosicionable(){
 				public int getX(){
 					return controllerNave.getX(estaNave);
@@ -87,8 +85,6 @@ public class Nave implements ObjetoVivo{
 				}
 			});
 		}
-		//XXX: Actualmente el objeto vivo no hace nada, se puede implementar para hacer una animacion o movimiento fluido
-		//this.gameLoop.agregar(this);
 	}
 
 	@Override
@@ -106,7 +102,6 @@ public class Nave implements ObjetoVivo{
 			if(numeroNave == num++)
 				return pos.getX() *this.ladoX;
 		}
-		//FIXME: buscar otra fomra de hacerlo desaparecer,,
 		return -1000;
 	}
 

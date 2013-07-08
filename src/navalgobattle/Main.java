@@ -21,7 +21,6 @@ import navalgobattle.model.Posicion;
 public class Main {
 	public static void main(String[] args) throws Exception {
 		Config.initialice();
-		//TODO: Pasar la configuracion por defecto a otro lado o levantarla de archivo.
 		Config.setObject("maxPos", new Posicion(10, 10));
 		Config.setObject("puntosPorDefecto", new Integer(10000));
 		Hashtable<TipoNave, Integer> navesConfig = new Hashtable<TipoNave, Integer>();

@@ -71,7 +71,6 @@ public class VentanaJuego extends Ventana{
 
 	protected void initialize() throws IOException {
 		super.initialize();
-		//FIXME: Cabeceada para tener el this dentro de los eventos
 		final VentanaJuego that = this;
 
 		final JPanel panel = new SuperficiePanel();
@@ -117,9 +116,6 @@ public class VentanaJuego extends Ventana{
 			}
 		});
 
-		//FIXME: No me deja autoiniciar el gameloop, es algo relacionado con que SuperficiePanel no esta lista en esta instancia.
-		//TODO: se deberia llamar al detener en algun lado
-		//that.gameLoop.iniciarEjecucion();
 		JButton btnIniciar = new JButton("Iniciar Juego");
 		btnIniciar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -132,15 +128,6 @@ public class VentanaJuego extends Ventana{
 		this.add(btnIniciar);
 
 
-		////Agregamos un ObjetoVivo para que se actualice la informacion en pantalla
-		//this.gameLoop.agregar(new ObjetoVivo(){
-		//	@Override
-		//	public void vivir(){
-		//		Logger.log(LogLevel.DEBUG, "Relodeo muchoo =)");
-		//		that.setTurno();
-		//		that.setPuntos();
-		//	}
-		//});
 		this.juego.addJuegoSiguienteTurnoListener(new EventJuegoSiguienteTurno(){
 			public void siguienteTurno(){
 				Logger.log(LogLevel.DEBUG, "Se llama evento de siguiente turno");
@@ -151,7 +138,6 @@ public class VentanaJuego extends Ventana{
 		this.juego.addJuegoTerminadoListener(new EventJuegoTerminado(){
 			public void juegoTermino(final boolean gano, final int puntos){
 				Logger.log(LogLevel.DEBUG, "**Fin de juego. Gano: "+gano+" Puntos:"+puntos);
-				//TODO: hacer clase Alert y pasarlo ahi, en vez de hacer esto feo.
 				new Ventana(){
 					public void initialize() throws IOException{
 						super.initialize();

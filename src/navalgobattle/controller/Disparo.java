@@ -49,7 +49,6 @@ public class Disparo implements ObjetoVivo{
 	 */
 	protected void agregarEnJuego(){
 		final Disparo controllerDisparo = this;
-		// FIXME: repito, esto es un asco
 		Color color = Color.BLUE;
 		switch(this.tipo){
 			case CONVENCIONAL:
@@ -70,7 +69,6 @@ public class Disparo implements ObjetoVivo{
 		}
 
 		final Color tColor = color;
-		//XXX: Se usan clases Anonimas, se podria hacer de una manera mas linda. Ademas se hardcodea el color.
 		this.gameLoop.agregar(new Elipse(this.ladoX, this.ladoY, (ObjetoPosicionable) new ObjetoPosicionable(){
 			public int getX(){
 				return controllerDisparo.getX();
@@ -83,8 +81,6 @@ public class Disparo implements ObjetoVivo{
 				return tColor;
 			}
 		});
-		//XXX: Actualmente el objeto vivo no hace nada, se puede implementar para hacer una animacion o movimiento fluido
-		//this.gameLoop.agregar(this);
 	}
 
 	@Override
@@ -97,7 +93,6 @@ public class Disparo implements ObjetoVivo{
 	 */
 	public int getX() {
 		if(this.disparo.disparo())
-			//FIXME: buscar otra fomra de hacerlo desaparecer,,
 			return -1000;
 		return (int) Math.round(this.disparo.getPosicion().getX() * this.ladoX);// + this.ladoX/2);
 	}
@@ -106,7 +101,6 @@ public class Disparo implements ObjetoVivo{
 	 */
 	public int getY() {
 		if(this.disparo.disparo())
-			//FIXME: buscar otra fomra de hacerlo desaparecer,,
 			return -1000;
 		return (int) Math.round(this.disparo.getPosicion().getY() * this.ladoY);// + this.ladoY/2);
 	}

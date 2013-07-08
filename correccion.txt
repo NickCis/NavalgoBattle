@@ -27,7 +27,7 @@ Diagramas
 Diagrama de clases
 ¿Está completo?
 NO
-(-) Faltan clases de vista y controlador
+(-) Faltan clases de vista y controlador -- Arreglado
 (-) Faltan también clases del modelo (ej: Posicion, ParteNave). Arreglado
 (-) No está actualizado con el código
 ¿Está bien utilizada la notación?
@@ -37,8 +37,7 @@ Diagramas de secuencia
 SI
 ¿Es consistente con el diagrama de clases?
 NO
-(-) Incluye objetos y métodos inexistentes
-(-) Incluye objetos y métodos inexistentes
+(-) Incluye objetos y métodos inexistentes -- Se arreglo
 ¿Está bien utilizada la notación?
 SI
 Diagrama de estados --- No se pide
@@ -62,7 +61,22 @@ SI
 
 NOTA: Insuficiente
 
+Changelog:
+Informe:
+* Se agrego seccion de supuestos.
+* Se arreglaron de sintaxis.
+* Se arreglo el modelo de dominio.
+* Se agregaron los diagramas UML de la vista y el controlador.
+* Se actualizo diagrama de modelo.
+* No se agrego el diagrama de estados, ya que no esta en la lista de entregables.
 
-Falta:
-Arreglar todo lo del informe y cambiar nombre de los tests
+Codigo:
+* Se quito boton de otra cosa.
+* Se quito el metodo NavalgoBattle.getNaves().
+* Se creo la clase calculadoraDePixeles para que haga la conversion de pixeles a coordenadas.
+* Se arreglo el no uso del polimorfismo en la clase Destructor.
+* Se hizo privado el metodo disparar. doDisparar es un metodo de api.
+* Se borro el archivo Controller.java.
+* Se sacaron TODO:, FIXME: y XXX:.
+
 

@@ -226,7 +226,6 @@ public class NavalgoBattle {
 	}
 
 	/** Agrega las naves del juego en posiciones random.
-	 * TODO: falta implementar que cree todas las naves levantando la cantidad y tipo desde Config.
 	 */
 	public void agregarNavesRandom(){
 		Hashtable<TipoNave, Integer> navesDefault = (Hashtable<TipoNave, Integer>) Config.getObject("navesDefault");
@@ -279,7 +278,6 @@ public class NavalgoBattle {
 
 	/** Devuelve una posicion random.
 	 * Tiene en cuenta los limites de maxPos
-	 * TODO: esto se podria pasar a alguna parte del model
 	 * @return Posicion;
 	 */
 	protected Posicion randomPosicion(){
@@ -290,12 +288,9 @@ public class NavalgoBattle {
 	}
 
 	/** Devuelve una direccion Random.
-	 * TODO: esto se podria pasar a alguna parte del model
 	 */
 	protected int randomDireccion(){
-		//TODO: hacerlo mas lindo
 		int dir = (int) Math.round(Math.random() * 15);//La posicion maxima es 1111 -> 15
-		//TODO: Habria que poner la direccion como un enum o algo y dejar de hacer estas cosas sucias
 		if ((dir & 1) == 0 && (dir & 4) == 0 )
 			return this.randomDireccion();
 		return dir;
